@@ -1,0 +1,4 @@
+[buildserver-linux-slaves]
+
+[linux-all:children]
+buildserver-linux-slaves

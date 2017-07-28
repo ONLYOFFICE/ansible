@@ -1,0 +1,4 @@
+ssh_config_dest: "{{ ansible_env.HOME }}/.ssh/config"
+ssh_priv_key_file: "github.pem"
+ssh_priv_key_src: "private_keys/{{ ssh_priv_key_file }}"
+ssh_priv_key_dest: "{{ ansible_env.HOME }}/.ssh/private_keys"

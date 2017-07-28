@@ -1,0 +1,33 @@
+- name: Install requred packages
+  apt: name={{ item }} force=yes 
+  with_items:
+  - "build-essential"
+  - "createrepo"        
+  - "default-jre"
+  - "debhelper"
+  - "dpkg-dev"
+  - "git"
+  - "libatk1.0-dev"
+  - "libcairo2-dev"
+  - "libcurl4-gnutls-dev"
+  - "libgconf2-dev"        
+  - "libgdk-pixbuf2.0-dev"
+  - "libglib2.0-dev"      
+  - "libgtkglext1-dev"
+  - "libxml2-dev"
+  - "libxss-dev"
+  - "p7zip-full"
+  - "qt5-default"
+  - "qtchooser"
+  - "sed"
+  - "subversion"
+  - "wget"
+  become: yes
+
+- name: Install grunt
+  npm: name=grunt-cli global=yes
+  become: yes
+
+- name: Install awscli python package.
+  pip: name=awscli
+  become: yes

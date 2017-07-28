@@ -1,0 +1,5 @@
+- src: geerlingguy.docker
+- src: geerlingguy.nodejs
+- src: geerlingguy.ntp
+- src: geerlingguy.pip
+- src: kamaln7.swapfile

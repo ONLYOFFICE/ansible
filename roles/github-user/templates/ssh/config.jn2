@@ -1,0 +1,2 @@
+Host github.com
+  IdentityFile {{ ssh_priv_key_dest }}/{{ ssh_priv_key_file }}

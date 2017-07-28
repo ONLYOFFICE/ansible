@@ -1,0 +1,11 @@
+---
+- hosts: buildserver-linux-slaves
+
+  roles:
+    #- kamaln7.swapfile
+    #- geerlingguy.ntp
+    #- geerlingguy.nodejs
+    #- geerlingguy.pip
+    #- geerlingguy.docker
+    - github-user
+    #- ds-builder
