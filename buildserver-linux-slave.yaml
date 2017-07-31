@@ -6,6 +6,10 @@
     - geerlingguy.ntp
     - geerlingguy.nodejs
     - geerlingguy.pip
-    - geerlingguy.docker
     - github-user
     - ds-builder
+
+- hosts: buildserver-linux-64-slaves
+
+  roles:
+    - geerlingguy.docker
