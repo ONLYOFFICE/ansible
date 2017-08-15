@@ -1,0 +1,62 @@
+- name: install requred packages
+  apt: name={{ item }} force=yes 
+  with_items:
+  - "bzip2"
+  - "gzip"
+  - "libcups2-dev"
+  - "libglu1-mesa-dev"
+  - "libx11-xcb-dev"
+  - "libxcb*"
+  - "libxrender-dev"
+  - "tar"
+  - "unzip"
+  become: yes
+
+- name: download qt source
+  get_url:
+    url: "{{ qt_src_url }}"
+    dest: "./{{ qt_src_arch }}"
+
+- name: create dir for qt source
+  file:
+    path: "{{ qt_src_dest }}"
+    state: "absent"
+  become: yes
+
+# - name: unarchive qt source
+#   unarchive:
+#     src: "./{{ qt_src_arch }}"
+#     dest: "{{ qt_src_dest }}"
+#     remote_src: yes
+
+- name: unarchive qt source
+  shell: tar -xzf ./{{ qt_src_arch }}
+  args:
+    creates: "{{ qt_src_dest }}"
+
+- name: configure qt source
+  shell: ./configure -opensource -confirm-license -release -shared -accessibility -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -qt-freetype -no-sql-sqlite -no-qml-debug -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtmultimedia -skip qtserialport -skip qtsensors -skip qtwebsockets -skip qtxmlpatterns -skip qt3d
+  args:
+    chdir: "{{ qt_src_dest }}"
+
+- name: make qt
+  make:
+    chdir: "{{ qt_src_dest }}"
+
+- name: install qt
+  make:
+    chdir: "{{ qt_src_dest }}"
+    target: install
+  become: yes
+
+- name: create qtchooser config directory
+  file:
+    path: "{{ qtchooser_conf_path | dirname }}"
+    state: "directory"
+  become: yes
+
+- name: copy qtchooser config
+  template:
+    src: "qtchooser/qt.conf.jn2"
+    dest: "{{ qtchooser_conf_path }}"
+  become: yes

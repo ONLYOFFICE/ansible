@@ -1,0 +1,6 @@
+qt_version: "5.6"
+qt_release: "{{ qt_version }}.1"
+qt_src_dir: "qt-everywhere-opensource-src-{{ qt_release }}"
+qt_src_dest: "./{{ qt_src_dir }}"
+qt_src_arch: "{{ qt_src_dir }}.tar.gz"
+qt_src_url: "http://download.qt.io/official_releases/qt/{{ qt_version }}/{{ qt_release }}/single/{{ qt_src_arch }}"

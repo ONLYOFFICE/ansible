@@ -8,6 +8,7 @@
     - geerlingguy.pip
     - github-user
     - ds-builder
+    - de-builder
 
 - hosts: buildserver-linux-64-slaves
 

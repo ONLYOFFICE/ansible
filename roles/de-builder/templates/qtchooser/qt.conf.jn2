@@ -1,0 +1,2 @@
+/usr/local/Qt-{{ qt_release }}/bin
+/usr/local/Qt-{{ qt_release }}/lib
