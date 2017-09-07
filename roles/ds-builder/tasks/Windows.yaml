@@ -1,0 +1,95 @@
+- name: Download Java
+  get_url:
+    url: "{{ java_url }}"
+    headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
+    dest: "./{{ java_installer }}"
+  delegate_to: localhost
+
+- name: Copy Java installer to removte machine
+  win_copy:
+    src: "./{{ java_installer }}"
+    dest: "{{ java_installer }}"
+
+- name: Install packages
+  win_package:
+    name: "{{ item.name }}"
+    path: "{{ item.path }}"
+    product_id: "{{ item.product_id }}"
+    arguments: "{{ item.arguments }}"
+  with_items:
+    - "{{ packages }}"
+
+- name: Check is msys2 installed
+  win_stat:
+    path: "{{ msys2_path }}"
+  register: msys2_path_stat
+
+- debug:
+    var: msys2_path_stat
+    verbosity: 2
+
+- name: Download msys2 auto-install.js
+  win_get_url:
+    url: https://raw.githubusercontent.com/msys2/msys2-installer/master/auto-install.js
+    dest: '{{ msys2_auto_install }}'
+  when: msys2_path_stat.stat.exists != true
+
+- name: Install msys2 packages
+  win_package:
+    name: "{{ item.name }}"
+    path: "{{ item.path }}"
+    product_id: "{{ item.product_id }}"
+    arguments: "{{ item.arguments }}"
+  with_items:
+    - "{{ msys2_packages }}"
+  when: msys2_path_stat.stat.exists != true
+  ignore_errors: yes
+
+- name: Check is qt installed
+  win_stat:
+    path: "{{ qt_path }}"
+  register: qt_path_stat
+
+- debug:
+    var: qt_path_stat
+    verbosity: 2
+
+- name: Get qt-auto-install.qs
+  win_template:
+    src: 'qti/{{ qt_auto_install }}.jn2'
+    dest: '{{ qt_auto_install }}'
+  when: qt_path_stat.stat.exists != true
+
+- name: Install qt packages
+  win_package:
+    name: "{{ item.name }}"
+    path: "{{ item.path }}"
+    product_id: "{{ item.product_id }}"
+    arguments: "{{ item.arguments }}"
+  with_items:
+    - "{{ qt_packages }}"
+  when: qt_path_stat.stat.exists != true
+  ignore_errors: yes
+
+- name: Set up PATH variable
+  win_path:
+    elements:
+    - '{{ exec_path }}'
+  notify: restart-server
+
+- name: Add or update registry path
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: LocalAccountTokenFilterPolicy
+    data: 1
+    type: dword
+
+- name: Add or update registry path
+  win_regedit:
+    path: HKLM:\System\CurrentControlSet\Control\Lsa
+    name: LMCompatibilityLevel
+    data: 2
+    type: dword
+  notify: restart-server
+
+    
