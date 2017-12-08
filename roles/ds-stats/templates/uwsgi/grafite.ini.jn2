@@ -1,0 +1,6 @@
+[uwsgi]
+processes = 2
+socket = 127.0.0.1:{{ uwsgi_port }}
+gid = {{ graphite_user }}
+uid = {{ graphite_user }}
+wsgi-file = /usr/share/graphite-web/graphite.wsgi

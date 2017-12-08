@@ -1,0 +1,7 @@
+---
+- hosts: stats-servers
+
+  roles:
+    - { role: kamaln7.swapfile, become: true }
+    - { role: geerlingguy.ntp,  become: true }
+    - { role: ds-stats,         become: true }
