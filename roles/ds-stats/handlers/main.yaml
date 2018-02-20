@@ -1,12 +1,9 @@
 ---
 - name: restart-nginx
   service: name=nginx state=restarted
-  #become: true
 
 - name: restart-uwsgi
   service: name=uwsgi state=restarted
-  #become: true
 
 - name: restart-carbon-cache
   service: name=carbon-cache state=restarted
-  #become: true
