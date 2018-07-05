@@ -3,10 +3,17 @@
   with_items:
   - "bzip2"
   - "gzip"
+  - "libasound2-dev"
+  - "libatspi2.0-dev"
   - "libcups2-dev"
+  - "libdbus-1-dev"
+  - "libicu-dev"
   - "libglu1-mesa-dev"
+  - "libgstreamer1.0-dev"
+  - "libgstreamer-plugins-base1.0-dev"
   - "libx11-xcb-dev"
   - "libxcb*"
+  - "libxi-dev"
   - "libxrender-dev"
   - "tar"
   - "unzip"
@@ -30,12 +37,12 @@
 #     remote_src: yes
 
 - name: unarchive qt source
-  shell: tar -xzf ./{{ qt_src_arch }}
+  shell: tar -xf ./{{ qt_src_arch }}
   args:
     creates: "{{ qt_src_dest }}"
 
 - name: configure qt source
-  shell: ./configure -opensource -confirm-license -release -shared -accessibility -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -qt-freetype -no-sql-sqlite -no-qml-debug -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtmultimedia -skip qtserialport -skip qtsensors -skip qtwebsockets -skip qtxmlpatterns -skip qt3d
+  shell: ./configure -opensource -confirm-license -release -shared -accessibility -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -qt-freetype -no-sql-sqlite -no-qml-debug -gstreamer 1.0 -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtserialport -skip qtsensors -skip qtwebsockets -skip qtxmlpatterns -skip qt3d
   args:
     chdir: "{{ qt_src_dest }}"
 
