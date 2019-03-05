@@ -6,9 +6,9 @@
     - geerlingguy.ntp
     - geerlingguy.nodejs
     - geerlingguy.pip
-    - github-user
+
     - ds-builder
-    - de-builder
+    - github-user
 
 - hosts: buildserver-linux-64-slaves
 
