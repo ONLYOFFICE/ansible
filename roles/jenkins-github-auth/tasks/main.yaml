@@ -1,0 +1,8 @@
+- name: configure jenkins
+  template:
+    src: groovy/init.groovy.jn2
+    dest: "{{ jenkins_home }}/init.groovy.d/init.groovy"
+    owner: "{{ jenkins_process_user }}"
+    group: "{{ jenkins_process_group }}"
+    mode: 0775
+  notify: restart-jenkins

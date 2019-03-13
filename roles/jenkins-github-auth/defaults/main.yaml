@@ -1,0 +1,5 @@
+jenkins_github_auth_clientid: "someid"
+jenkins_github_auth_clientsecret: "somesecret"
+jenkins_github_auth_oauthscopes: "read:org"
+jenkins_github_auth_admins: "samrocketman"
+jenkins_github_auth_org: "organizationNames"
