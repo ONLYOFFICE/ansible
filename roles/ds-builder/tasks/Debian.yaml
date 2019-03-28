@@ -5,7 +5,6 @@
   - "autoconf"
   - "build-essential"
   - "createrepo"        
-  - "default-jre"
   - "debhelper"
   - "dpkg-dev"
   - "git"
@@ -28,6 +27,42 @@
   - "tar"
   - "wget"
   - "unzip"
+  become: yes
+
+- name: Install java repo
+  apt_repository:
+    repo: "{{ java_repo }}"
+    filename: java
+  become: yes
+
+- name: Accept java license
+  debconf:
+    name: "{{ java_package }}"
+    question: shared/accepted-oracle-license-v1-1
+    value: "true"
+    vtype: select
+  become: yes
+
+- name: Set java license as seen
+  debconf:
+    name: "{{ java_package }}"
+    question: shared/accepted-oracle-license-v1-1
+    value: true
+    vtype: seen
+  become: yes
+
+# - name: Set java license as seen
+#   debconf:
+#     name: "{{ java_package }}"
+#     question: shared/present-oracle-license-v1-1
+#     value: true
+#     vtype: seen
+#   become: yes
+
+- name: Install java installer
+  apt:
+    name: "{{ java_package }}"
+    force: yes
   become: yes
 
 - name: Install qt repo
