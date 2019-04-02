@@ -1,0 +1,8 @@
+- name: Install HWE
+  package:
+    name: "{{ hwe_package }}"
+  register: hwe_status 
+
+- name: restart server
+  reboot:
+  when: hwe_status.changed

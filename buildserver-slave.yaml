@@ -2,6 +2,7 @@
 - hosts: buildserver-linux-slaves
 
   roles:
+    - hwe
     - kamaln7.swapfile
     - geerlingguy.ntp
     - geerlingguy.nodejs

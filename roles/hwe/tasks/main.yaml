@@ -1,0 +1,6 @@
+---
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yaml"
+
+- name: Include OS-specific task
+  include_tasks: "{{ ansible_distribution }}.yaml"
