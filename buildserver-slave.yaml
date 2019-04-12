@@ -9,6 +9,7 @@
     - geerlingguy.pip
 
     - ds-builder
+    - tb-builder
     - github-user
 
 - hosts: buildserver-linux-64-slaves
