@@ -42,12 +42,14 @@
     creates: "{{ qt_src_dest }}"
 
 - name: configure qt source
-  shell: ./configure -opensource -confirm-license -release -shared -accessibility -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -qt-freetype -no-sql-sqlite -no-qml-debug -gstreamer 1.0 -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtserialport -skip qtsensors -skip qtwebsockets -skip qtxmlpatterns -skip qt3d
+  shell: ./configure -opensource -confirm-license -release -shared -accessibility -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -no-sql-sqlite -no-qml-debug -gstreamer 1.0 -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtserialport -skip qtsensors -skip qtwebsockets -skip qtxmlpatterns -skip qt3d -skip qtwebview -skip qtwebengine -skip qtwebchannel
   args:
     chdir: "{{ qt_src_dest }}"
 
 - name: make qt
   make:
+    params:
+        MAKEFLAGS: "-e -j 4"
     chdir: "{{ qt_src_dest }}"
 
 - name: install qt
