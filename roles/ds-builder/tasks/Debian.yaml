@@ -88,7 +88,3 @@
 - name: Install grunt
   npm: name=grunt-cli global=yes
   become: yes
-
-- name: Install awscli python package.
-  pip: name=awscli
-  become: yes

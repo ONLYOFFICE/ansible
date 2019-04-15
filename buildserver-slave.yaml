@@ -11,6 +11,7 @@
     - ds-builder
     - tb-builder
     - github-user
+    - aws-cli
 
 - hosts: buildserver-linux-64-slaves
 

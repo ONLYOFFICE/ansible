@@ -1,0 +1,8 @@
+---
+aws_cli_user: "{{ ansible_user }}"
+aws_cli_group: "{{ aws_cli_user }}"
+aws_cli_user_home: "/home/{{ aws_cli_user }}"
+aws_cli_region: "us-west-2"
+aws_cli_output: "json"
+aws_cli_access_key_id: "AWS_ACCESS_KEY_ID"
+aws_cli_secret_access_key: "AWS_SECRET_ACCESS_KEY"

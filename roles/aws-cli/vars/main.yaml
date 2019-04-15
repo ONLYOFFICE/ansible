@@ -1,0 +1,2 @@
+---
+aws_cli_config_dir: "{{ aws_cli_user_home }}/.aws"

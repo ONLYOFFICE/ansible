@@ -1,0 +1,39 @@
+---
+- name: Install python modules
+  package:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - python-pip
+  become: yes
+
+- name: Install awscli python package.
+  pip: name=awscli
+  become: yes
+
+- name: Create aws directory
+  file:
+    path: "{{ aws_cli_config_dir }}"
+    state: directory
+    owner: "{{ aws_cli_user }}"
+    group: "{{ aws_cli_group }}"
+    mode: 0755
+  become: yes
+
+- name: Create aws config
+  template:
+    src: config.jn2
+    dest: "{{ aws_cli_config_dir }}/config"
+    owner: "{{ aws_cli_user }}"
+    group: "{{ aws_cli_group }}"
+    mode: 0600
+  become: yes
+
+- name: Create aws credentials'
+  template:
+    src: credentials.jn2
+    dest: "{{ aws_cli_config_dir }}/credentials"
+    owner: "{{ aws_cli_user }}"
+    group: "{{ aws_cli_group }}"
+    mode: 0600
+  become: yes
