@@ -6,6 +6,7 @@
   - "build-essential"
   - "createrepo"        
   - "debhelper"
+  - "desktop-file-utils"
   - "dpkg-dev"
   - "git"
   - "libatk1.0-dev"
