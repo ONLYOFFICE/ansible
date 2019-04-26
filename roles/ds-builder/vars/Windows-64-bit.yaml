@@ -2,66 +2,76 @@ msys2_path: C:\msys64
 
 packages:
   - name: 7-Zip
-    path: http://www.7-zip.org/a/7z1604-x64.msi
+    url: http://www.7-zip.org/a/7z1604-x64.msi
     product_id: '{23170F69-40C1-2702-1604-000001000000}'
     arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\7z.msi"
 
   - name: AWSCLI
-    path: https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
-    product_id: '{EE740D31-4B4C-44B9-B586-7B88EBF2922B}'
+    url: https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
+    product_id: '{F8C04D08-B44A-4C1E-A6B4-EEF2390806DB}'
     arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\aws-cli.msi"
 
   - name: Git
-    path: https://github.com/git-for-windows/git/releases/download/v2.14.1.windows.1/Git-2.14.1-64-bit.exe
+    url: https://github.com/git-for-windows/git/releases/download/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
     product_id: 'Git_is1'
     arguments: '{{ innosetup_args }}'
+    path: "{{ download_path }}\\git.exe"
 
   - name: Inno Setup
-    path: http://www.jrsoftware.org/download.php/is-unicode.exe
+    url: http://www.jrsoftware.org/download.php/is-unicode.exe
     product_id: 'Inno Setup 5_is1'
     arguments: '{{ innosetup_args }}'
+    path: "{{ download_path }}\\is-unicode.exe"
 
   - name: Java
-    path: '{{ java_installer }}'
-    product_id: '{26A24AE4-039D-4CA4-87B4-2F64180144F0}'
+    url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-x64.exe
+    product_id: '{26A24AE4-039D-4CA4-87B4-2F64180131F0}'
     arguments: '{{ java_args }}'
+    path: "{{ download_path }}\\java.exe"
+    headers: 
+      Cookie: "oraclelicense=accept-securebackup-cookie"
 
   - name: Node.js
-    path: https://nodejs.org/dist/v6.11.2/node-v6.11.2-x64.msi
-    product_id: '{C6D83D75-9B09-4DEA-A890-F700FD744DEA}'
+    url: https://nodejs.org/dist/v8.9.4/node-v8.9.4-x64.msi
+    product_id: '{4219DF19-09C9-47A4-88C0-49778E491E54}'
     arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\node.msi"
 
   - name: Python 2.7
-    path: https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi
+    url: https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi
     product_id: '{4A656C6C-D24A-473F-9747-3A8D00907A04}'
     arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\python27.msi"
 
-  - name: Visual Studio 2013 Express for Windows Desktop
-    path: http://download.microsoft.com/download/2/5/5/255DCCB6-F364-4ED8-9758-EF0734CA86B8/wdexpress_full.exe
-    product_id: '{1F1AA110-D758-30C1-A1B4-5484C72BCACE}'
+  - name: Visual Studio Community 2015
+    url: https://download.microsoft.com/download/e/4/c/e4c393a9-8fff-441b-ad3a-3f4040317a1f/vs_community.exe
+    product_id: '{79b486b9-c5f0-4096-a00c-8351f59587c2}'
     arguments: '{{ vs_args }}'
+    path: "{{ download_path }}\\vs.exe"
 
 msys2_packages:
   - name: MSYS2
-    path: http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20161025.exe
+    url: http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20161025.exe
     product_id: '{undefined}'
     arguments: '{{ msys2_args }}'
+    path: "{{ download_path }}\\msys2.exe"
 
 qt_packages:
-  - name: QT 5.6.2
-    path: http://download.qt.io/official_releases/qt/5.6/5.6.2/qt-opensource-windows-x86-msvc2013_64-5.6.2.exe
+  - name: QT 5.9
+    url: https://download.qt.io/official_releases/qt/5.9/5.9.8/qt-opensource-windows-x86-5.9.8.exe
     product_id: '{undefined}'
     arguments: '{{ qt_args }}'
+    path: "{{ download_path }}\\qt.exe"
 
 exec_path:
-  - '{{ qt_path }}\5.6\msvc2013_64\bin'
+  - '{{ qt_path }}\5.9\msvc2015_64\bin'
   - '%SystemDrive%\Python27'
   - '%ProgramFiles%\7-Zip'
   - '%ProgramFiles%\Amazon\AWSCLI'
   - '%ProgramFiles%\Git\bin'
-  - '%ProgramFiles%\Java\jre1.8.0_144\bin'
+  - '%ProgramFiles%\Java\jre1.8.0_131\bin'
   - '%ProgramFiles%\nodejs'
-  - 'ProgramFiles(x86)\Inno Setup 5'
-  - 'ProgramFiles(x86)\Microsoft Visual Studio 12.0\VC\bin'
-
-java_url: http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-windows-x64.exe
+  - '%ProgramFiles(x86)%\Inno Setup 5'
+  - '%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\VC\bin'

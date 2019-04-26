@@ -1,0 +1,4 @@
+- hosts: buildserver-windows-slaves
+  
+  roles:
+    - ds-builder

@@ -17,8 +17,3 @@
 
   roles:
     - geerlingguy.docker
-
-- hosts: buildserver-windows-slaves
-  
-  roles:
-    - ds-builder

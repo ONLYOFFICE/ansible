@@ -6,7 +6,7 @@ function Controller() {
 }
 
 Controller.prototype.WelcomePageCallback = function() {
-  gui.clickButton(buttons.NextButton);
+  gui.clickButton(buttons.NextButton, 1000);
 }
 
 Controller.prototype.CredentialsPageCallback = function() {
@@ -18,7 +18,7 @@ Controller.prototype.IntroductionPageCallback = function() {
 }
 
 Controller.prototype.TargetDirectoryPageCallback = function() {
-  gui.currentPageWidget().TargetDirectoryLineEdit.setText("{{ qt_path | replace('\', '/')}}");
+  gui.currentPageWidget().TargetDirectoryLineEdit.setText("{{ qt_path | replace('\\', '/')}}");
   gui.clickButton(buttons.NextButton);
 }
 
@@ -26,7 +26,7 @@ Controller.prototype.ComponentSelectionPageCallback = function() {
   var widget = gui.currentPageWidget();
 
   widget.deselectAll();
-  widget.selectComponent("qt.56.win64_msvc2013_64");
+  widget.selectComponent("qt.59.win64_msvc2015_64");
   gui.clickButton(buttons.NextButton);
 }
 

@@ -1,21 +1,26 @@
-- name: Download Java
-  get_url:
-    url: "{{ java_url }}"
-    headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
-    dest: "./{{ java_installer }}"
-  delegate_to: localhost
+- name: Create download directory
+  win_file:
+    path: "{{ download_path }}"
+    state: directory
 
-- name: Copy Java installer to removte machine
-  win_copy:
-    src: "./{{ java_installer }}"
-    dest: "{{ java_installer }}"
+- name: Download packages
+  win_get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.path }}"
+    headers: "{{ item.headers|default() }}"
+    force: no
+  with_items:
+    - "{{ packages }}"
+    - "{{ msys2_packages }}"
+    - "{{ qt_packages }}"
 
-- name: Install packages
+- name: Install packages GUIDed packages
   win_package:
     name: "{{ item.name }}"
     path: "{{ item.path }}"
     product_id: "{{ item.product_id }}"
     arguments: "{{ item.arguments }}"
+  when: item.product_id is defined
   with_items:
     - "{{ packages }}"
 
@@ -56,7 +61,7 @@
 
 - name: Get qt-auto-install.qs
   win_template:
-    src: 'qti/{{ qt_auto_install }}.jn2'
+    src: 'qti/qt-auto-install.qs.jn2'
     dest: '{{ qt_auto_install }}'
   when: qt_path_stat.stat.exists != true
 

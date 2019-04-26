@@ -1,11 +1,12 @@
+download_path: C:\Temp
 msi_args: /quiet /qn /norestart
 innosetup_args: /VERYSILENT /NORESTART
 java_args: INSTALL_SILENT=Enable REBOOT=Disable SPONSORS=Disable
-java_installer: jre.exe
+java_installer: "{{ download_path }}\\jre.exe"
 vs_args: /Quiet /NoRestart
-msys2_auto_install: msys2-auto-install.qs
+msys2_auto_install: "{{ download_path }}\\msys2-auto-install.qs"
 msys2_args: '--platform minimal --script {{ msys2_auto_install }}'
 
-qt_auto_install: qt-auto-install.qs
+qt_auto_install: "{{ download_path }}\\qt-auto-install.qs"
 qt_args: '--script {{ qt_auto_install }}'
-qt_path: C:\Qt\Qt5.6.2
+qt_path: C:\Qt\Qt5.9.8
