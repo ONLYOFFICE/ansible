@@ -2,3 +2,4 @@
   
   roles:
     - ds-builder
+    - aws-cli

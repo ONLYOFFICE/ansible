@@ -1,0 +1,16 @@
+---
+
+- name: Create aws directory
+  win_file:
+    path: "{{ aws_cli_config_dir }}"
+    state: directory
+
+- name: Create aws config
+  win_template:
+    src: config.jn2
+    dest: "{{ aws_cli_config_dir }}/config"
+
+- name: Create aws credentials'
+  win_template:
+    src: credentials.jn2
+    dest: "{{ aws_cli_config_dir }}/credentials"
