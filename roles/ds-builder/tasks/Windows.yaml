@@ -71,7 +71,7 @@
     path: "{{ qt_path }}"
   register: qt_path_stat
 
-  - debug:
+- debug:
     var: qt_path_stat
     verbosity: 2
 
