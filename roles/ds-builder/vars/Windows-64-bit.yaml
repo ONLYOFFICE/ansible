@@ -13,11 +13,11 @@ packages:
     arguments: '{{ msi_args }}'
     path: "{{ download_path }}\\aws-cli.msi"
 
-  - name: Git
-    url: https://github.com/git-for-windows/git/releases/download/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
-    product_id: 'Git_is1'
-    arguments: '{{ innosetup_args }}'
-    path: "{{ download_path }}\\git.exe"
+   - name: Git
+     url: https://github.com/git-for-windows/git/releases/download/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
+     product_id: 'Git_is1'
+     arguments: '{{ innosetup_args }}'
+     path: "{{ download_path }}\\git.exe"
 
   - name: Inno Setup
     url: http://www.jrsoftware.org/download.php/is-unicode.exe
@@ -51,6 +51,19 @@ packages:
     arguments: '{{ vs_args }}'
     path: "{{ download_path }}\\vs.exe"
 
+  - name: Windows 10 SDK
+    url: http://download.microsoft.com/download/C/D/8/CD8533F8-5324-4D30-824C-B834C5AD51F9/standalonesdk/sdksetup.exe
+    product_id: '{5eb6fbea-73ee-4a8e-9042-110704768d7f}'
+    arguments: '{{ w10sdk_args }}'
+    path: "{{ download_path }}\\w10sdk.exe"
+
+  - name: Tortoise svn
+    url: http://rwthaachen.dl.osdn.jp/storage/g/t/to/tortoisesvn/1.10.3/Application/TortoiseSVN-1.10.3.28489-x64-svn-1.10.4.msi
+    product_id: '{629C95E8-10D9-4F05-8958-DC66A5A72925}'
+    arguments: "{{ svn_args }}"
+    path: "{{ download_path }}\\svn.msi"
+
+
 msys2_packages:
   - name: MSYS2
     url: http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20161025.exe
@@ -65,13 +78,19 @@ qt_packages:
     arguments: '{{ qt_args }}'
     path: "{{ download_path }}\\qt.exe"
 
+mingw_packages:
+  - name: Mingw
+    url: https://netix.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-win32/seh/x86_64-8.1.0-release-win32-seh-rt_v6-rev0.7z
+    path: "{{ download_path }}\\mingw.7z"
+
 exec_path:
-  - '{{ qt_path }}\5.9\msvc2015_64\bin'
   - '%SystemDrive%\Python27'
-  - '%ProgramFiles%\7-Zip'
-  - '%ProgramFiles%\Amazon\AWSCLI'
-  - '%ProgramFiles%\Git\bin'
-  - '%ProgramFiles%\Java\jre1.8.0_131\bin'
-  - '%ProgramFiles%\nodejs'
-  - '%ProgramFiles(x86)%\Inno Setup 5'
-  - '%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\VC\bin'
+  - '{{ qt_path }}\5.9.8\msvc2015_64\bin'
+  - '{{ mingw_path }}\mingw64\bin'
+  - '{{ msys2_path }}\usr\bin'
+  - '%SystemDrive%\Program Files\7-Zip'
+  - '%SystemDrive%\Program Files\Git\bin'
+  - '%SystemDrive%\Program Files\TortoiseSVN\bin'
+  - '%SystemDrive%\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm'
+  - '%SystemDrive%\Program Files (x86)\Inno Setup 5'
+  - '%SystemDrive%\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin'

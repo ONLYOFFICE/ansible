@@ -13,6 +13,12 @@
     - "{{ packages }}"
     - "{{ msys2_packages }}"
     - "{{ qt_packages }}"
+    - "{{ mingw_packages }}"
+
+- name: Get vs.xml
+  win_template:
+    src: 'vs/vs.xml.jn2'
+    dest: '{{ vs_auto_install }}'
 
 - name: Install packages GUIDed packages
   win_package:
@@ -50,12 +56,22 @@
   when: msys2_path_stat.stat.exists != true
   ignore_errors: yes
 
+- name: Check is mingw installed
+  win_stat:
+    path: "{{ mingw_path }}"
+  register: mingw_path_stat
+
+- name: Install mingw packages
+  win_command: "\"C:\\Program Files\\7-Zip\\7z.exe\" x {{ mingw_packages[0].path }} -o{{ mingw_path }}"
+  args:
+    creates: "{{ mingw_path }}"
+
 - name: Check is qt installed
   win_stat:
     path: "{{ qt_path }}"
   register: qt_path_stat
 
-- debug:
+  - debug:
     var: qt_path_stat
     verbosity: 2
 
@@ -81,6 +97,28 @@
     elements:
     - '{{ exec_path }}'
   notify: restart-server
+
+- name: Check is grunt installed
+  win_stat:
+    path: "{{ grunt_path }}"
+  register: grunt_path_stat
+
+- name: Get current npm path 
+  win_command: "npm.cmd prefix -g"
+  register: npm_path_stat
+  when: grunt_path_stat.stat.exists != true
+
+- name: Setup npm path 
+  win_command: "npm.cmd config set prefix {{ npm_path }}"
+  when: grunt_path_stat.stat.exists != true
+
+- name: Install grunt
+  win_command: "npm.cmd install grunt-cli -g"
+  when: grunt_path_stat.stat.exists != true
+
+- name: Restore npm path 
+  win_command: "npm.cmd config set prefix {{ npm_path_stat.stdout_lines[0] }}"
+  when: grunt_path_stat.stat.exists != true
 
 - name: Add or update registry path
   win_regedit:

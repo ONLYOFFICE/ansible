@@ -1,12 +1,20 @@
 download_path: C:\Temp
 msi_args: /quiet /qn /norestart
+svn_args: ADDLOCAL=ALL
+
 innosetup_args: /VERYSILENT /NORESTART
 java_args: INSTALL_SILENT=Enable REBOOT=Disable SPONSORS=Disable
 java_installer: "{{ download_path }}\\jre.exe"
-vs_args: /Quiet /NoRestart
+vs_auto_install: "{{ download_path }}\\vs.xml"
+vs_args: "/Quiet /NoRestart /AdminFile {{ vs_auto_install }}"
+w10sdk_args: '/features + /q'
 msys2_auto_install: "{{ download_path }}\\msys2-auto-install.qs"
 msys2_args: '--platform minimal --script {{ msys2_auto_install }}'
 
 qt_auto_install: "{{ download_path }}\\qt-auto-install.qs"
 qt_args: '--script {{ qt_auto_install }}'
 qt_path: C:\Qt\Qt5.9.8
+mingw_path: C:\Mingw
+
+npm_path: C:\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm
+grunt_path: "{{ npm_path }}\\grunt.cmd"
