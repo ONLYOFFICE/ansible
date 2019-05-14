@@ -13,11 +13,11 @@ packages:
     arguments: '{{ msi_args }}'
     path: "{{ download_path }}\\aws-cli.msi"
 
-   - name: Git
-     url: https://github.com/git-for-windows/git/releases/download/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
-     product_id: 'Git_is1'
-     arguments: '{{ innosetup_args }}'
-     path: "{{ download_path }}\\git.exe"
+  - name: Git
+    url: https://npm.taobao.org/mirrors/git-for-windows/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
+    product_id: 'Git_is1'
+    arguments: '{{ innosetup_args }}'
+    path: "{{ download_path }}\\git.exe"
 
   - name: Inno Setup
     url: http://www.jrsoftware.org/download.php/is-unicode.exe
