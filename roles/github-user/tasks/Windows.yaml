@@ -1,0 +1,29 @@
+---
+
+- name: Create .ssh config path
+  win_file:
+    path: "{{ ssh_home }}\\.ssh"
+    state: "directory"
+
+- name: Copy ssh config
+  win_template:
+    src: "ssh/config.jn2"
+    dest: "{{ ssh_config_dest }}"
+
+- name: Create private keys directory
+  win_file:
+    path: "{{ ssh_priv_key_dest }}"
+    state: "directory"
+
+- name: Copy github private key
+  win_copy: 
+    src: "{{ ssh_priv_key_src }}"
+    dest: "{{ ssh_priv_key_dest }}\\"
+
+- name: Ensure github.com is a known host
+  win_lineinfile:
+    dest: "{{ ssh_home }}/.ssh/known_hosts"
+    create: yes
+    state: present
+    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+    regexp: "^github\\.com"

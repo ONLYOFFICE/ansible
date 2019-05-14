@@ -1,0 +1,39 @@
+---
+
+- name: Install git
+  package:
+    name: git
+  become: yes
+
+- name: Copy ssh config
+  template:
+    src: "ssh/config.jn2"
+    dest: "{{ ssh_config_dest }}"
+    mode: "0600"
+  become: yes
+  become_user: "{{ ssh_user }}"
+
+- name: Create private keys directory
+  file:
+    path: "{{ ssh_priv_key_dest }}"
+    state: "directory"
+  become: yes
+  become_user: "{{ ssh_user }}"
+
+- name: Copy github private key
+  copy: 
+    src: "{{ ssh_priv_key_src }}"
+    dest: "{{ ssh_priv_key_dest }}"
+    mode: "0600"
+  become: yes
+  become_user: "{{ ssh_user }}"
+
+- name: Ensure github.com is a known host
+  lineinfile:
+    dest: "{{ ssh_home }}/.ssh/known_hosts"
+    create: yes
+    state: present
+    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+    regexp: "^github\\.com"
+  become: yes
+  become_user: "{{ ssh_user }}"
