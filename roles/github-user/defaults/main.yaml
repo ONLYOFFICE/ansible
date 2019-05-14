@@ -1,0 +1,2 @@
+ssh_home: "{{ ansible_env.HOME }}"
+ssh_user: "{{ ansible_user }}"
