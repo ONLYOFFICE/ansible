@@ -1,5 +1,8 @@
 - hosts: buildserver-windows-slaves
   
   roles:
-    - ds-builder
-    - aws-cli
+    - { role: ds-builder }
+    - { role: aws-cli }
+    - { role: github-user }
+    - { role: aws-cli, user_profile_path: "C:\\msys64" }
+    - { role: github-user, user_profile_path: "C:\\msys64" }
