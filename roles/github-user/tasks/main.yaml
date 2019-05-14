@@ -1,3 +1,8 @@
+- name: Install git
+  package:
+    name: git
+  become: yes
+
 - name: Copy ssh config
   template:
     src: "ssh/config.jn2"
