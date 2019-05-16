@@ -1,5 +1,5 @@
 ---
-- hosts: buildserver-linux-slaves
+- hosts: build-linux-slaves
 
   roles:
     - hwe
@@ -10,10 +10,11 @@
 
     - ds-builder
     - tb-builder
-    - github-user
-    - aws-cli
+# Don't uncomment lines below, it runs in buildserver.yaml
+#    - github-user
+#    - aws-cli
 
-- hosts: buildserver-linux-64-slaves
+- hosts: build-linux-64-slaves
 
   roles:
     - geerlingguy.docker

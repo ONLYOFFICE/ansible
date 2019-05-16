@@ -1,7 +1,9 @@
-- hosts: buildserver-windows-slaves
+- hosts: build-windows-slaves
   
   roles:
     - { role: ds-builder }
+    - { role: exe-signer, cert_path: certs/asc.pfx }
+    - { role: exe-signer, cert_path: certs/nct.pfx }
     - { role: aws-cli }
     - { role: github-user }
     - { role: aws-cli, user_profile_path: "C:\\msys64" }
