@@ -1,0 +1,13 @@
+import hudson.security.HudsonPrivateSecurityRealm
+import hudson.security.FullControlOnceLoggedInAuthorizationStrategy
+import jenkins.model.Jenkins
+
+def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+
+hudsonRealm.createAccount('{{ jenkins_admin_username }}',
+    '{{ jenkins_admin_password }}')
+Jenkins.instance.setSecurityRealm(hudsonRealm)
+
+def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
+Jenkins.instance.setAuthorizationStrategy(strategy)
+Jenkins.instance.save()
