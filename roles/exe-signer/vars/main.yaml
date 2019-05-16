@@ -1,0 +1,2 @@
+remote_upload_path: C:\Temp
+remote_cert_path: "{{ remote_upload_path }}\\cert.pfx"

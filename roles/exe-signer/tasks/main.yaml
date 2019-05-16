@@ -1,0 +1,29 @@
+---
+
+- name: Check remote temp directory
+  win_file:
+    path: "{{ remote_upload_path }}"
+    state: directory
+
+- name: Copy cert to remote directory
+  win_copy: 
+    src: "{{ cert_path }}"
+    dest: "{{ remote_cert_path }}"
+
+- name: Install certificate
+  win_certificate_store:
+    path: "{{ remote_cert_path }}"
+    state: present
+    password: "{{ cert_pwd }}"
+    store_location: CurrentUser
+    store_name: My 
+    key_storage: user
+    key_exportable: no
+  become: yes
+  become_method: runas
+  become_user: Local Service
+
+- name: Remove cert from remote directory
+  win_file: 
+    path: "{{ remote_cert_path }}"
+    state: absent
