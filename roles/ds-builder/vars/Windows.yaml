@@ -18,3 +18,15 @@ mingw_path: C:\Mingw
 
 npm_path: C:\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm
 grunt_path: "{{ npm_path }}\\grunt.cmd"
+
+innosetup_lang_path: "{{ innosetup_path }}\\Languages"
+
+innosetup_langs:
+  - url: "https://raw.githubusercontent.com/jrsoftware/issrc/master/Files/Languages/Unofficial/ChineseSimplified.isl"
+    dest: "{{ innosetup_lang_path }}\\ChineseSimplified.isl"
+
+  - url: "https://raw.githubusercontent.com/jrsoftware/issrc/master/Files/Languages/Unofficial/ChineseTraditional.isl"
+    dest: "{{ innosetup_lang_path }}\\ChineseTraditional.isl"
+
+  - url: "https://raw.githubusercontent.com/jrsoftware/issrc/master/Files/Languages/Unofficial/Slovak.isl"
+    dest: "{{ innosetup_lang_path }}\\Slovak.isl"

@@ -67,14 +67,14 @@ packages:
 msys2_packages:
   - name: MSYS2
     url: http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20161025.exe
-    product_id: '{undefined}'
+    product_id: '{5c589d88-01bd-48fd-9fe6-32b8063be7a2}'
     arguments: '{{ msys2_args }}'
     path: "{{ download_path }}\\msys2.exe"
 
 qt_packages:
   - name: QT 5.9
     url: https://download.qt.io/official_releases/qt/5.9/5.9.8/qt-opensource-windows-x86-5.9.8.exe
-    product_id: '{undefined}'
+    product_id: '{88d6f945-e1bf-4b45-96d3-3568988b15de}'
     arguments: '{{ qt_args }}'
     path: "{{ download_path }}\\qt.exe"
 
@@ -94,3 +94,5 @@ exec_path:
   - '%SystemDrive%\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm'
   - '%SystemDrive%\Program Files (x86)\Inno Setup 5'
   - '%SystemDrive%\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin'
+
+innosetup_path: "C:\\Program Files (x86)\\Inno Setup 5"
