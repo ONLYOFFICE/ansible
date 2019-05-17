@@ -1,2 +1,3 @@
 *.retry
 .vscode/*
+roles/exe-signer/files/certs/*.pfx
