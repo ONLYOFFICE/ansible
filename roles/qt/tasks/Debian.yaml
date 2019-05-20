@@ -1,0 +1,56 @@
+- name: Install requred packages
+  apt: 
+    name: "{{ qt_build_sourcecode_packages }}"
+  become: yes
+
+- name: download qt source
+  get_url:
+    url: "{{ qt_src_url }}"
+    dest: "./{{ qt_src_arch }}"
+
+# - name: create dir for qt source
+#   file:
+#     path: "{{ qt_src_dest }}"
+#     state: "absent"
+#   become: yes
+
+# - name: unarchive qt source
+#   unarchive:
+#     src: "./{{ qt_src_arch }}"
+#     dest: "{{ qt_src_dest }}"
+#     remote_src: yes
+
+- name: unarchive qt source
+  shell: tar -xf ./{{ qt_src_arch }}
+  args:
+    creates: "{{ qt_src_dest }}"
+
+- name: configure qt source
+  shell: ./configure -opensource -confirm-license -release -shared -accessibility -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -no-sql-sqlite -no-qml-debug -gstreamer 1.0 -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtserialport -skip qtsensors -skip qtxmlpatterns -skip qt3d -skip qtwebview -skip qtwebengine
+  args:
+    chdir: "{{ qt_src_dest }}"
+    creates: "{{ qt_src_dest }}/Makefile"
+
+- name: make qt
+  make:
+    params:
+        MAKEFLAGS: "-e -j 4"
+    chdir: "{{ qt_src_dest }}"
+
+- name: install qt
+  make:
+    chdir: "{{ qt_src_dest }}"
+    target: install
+  become: yes
+
+- name: create qtchooser config directory
+  file:
+    path: "{{ qtchooser_conf_path | dirname }}"
+    state: "directory"
+  become: yes
+
+- name: copy qtchooser config
+  template:
+    src: "qtchooser/qt.conf.jn2"
+    dest: "{{ qtchooser_conf_path }}"
+  become: yes
