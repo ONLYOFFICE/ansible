@@ -1,0 +1,98 @@
+program_files: "{{ program_files_64 }}"
+
+packages:
+  - name: 7-Zip
+    url: https://www.7-zip.org/a/7z1900-x64.msi
+    product_id: '{23170F69-40C1-2702-1604-000001000000}'
+    arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\7z.msi"
+
+  - name: AWSCLI
+    url: https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
+    product_id: '{F8C04D08-B44A-4C1E-A6B4-EEF2390806DB}'
+    arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\aws-cli.msi"
+
+  - name: Git
+    url: https://npm.taobao.org/mirrors/git-for-windows/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
+    product_id: 'Git_is1'
+    arguments: '{{ innosetup_args }}'
+    path: "{{ download_path }}\\git.exe"
+
+  - name: Inno Setup
+    url: http://files.jrsoftware.org/is/5/innosetup-5.6.1-unicode.exe
+    product_id: 'Inno Setup 5_is1'
+    arguments: '{{ innosetup_args }}'
+    path: "{{ download_path }}\\is-unicode.exe"
+
+  - name: Java
+    url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-x64.exe
+    product_id: '{26A24AE4-039D-4CA4-87B4-2F64180131F0}'
+    arguments: '{{ java_args }}'
+    path: "{{ download_path }}\\java.exe"
+    headers: 
+      Cookie: "oraclelicense=accept-securebackup-cookie"
+
+  - name: Node.js
+    url: https://nodejs.org/dist/v8.9.4/node-v8.9.4-x64.msi
+    product_id: '{4219DF19-09C9-47A4-88C0-49778E491E54}'
+    arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\node.msi"
+
+  - name: Python 2.7
+    url: https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi
+    product_id: '{4A656C6C-D24A-473F-9747-3A8D00907A04}'
+    arguments: '{{ msi_args }}'
+    path: "{{ download_path }}\\python27.msi"
+
+  - name: Visual Studio Community 2015
+    url: https://download.microsoft.com/download/e/4/c/e4c393a9-8fff-441b-ad3a-3f4040317a1f/vs_community.exe
+    product_id: '{79b486b9-c5f0-4096-a00c-8351f59587c2}'
+    arguments: '{{ vs_args }}'
+    path: "{{ download_path }}\\vs.exe"
+
+  - name: Windows 10 SDK
+    url: http://download.microsoft.com/download/C/D/8/CD8533F8-5324-4D30-824C-B834C5AD51F9/standalonesdk/sdksetup.exe
+    product_id: '{5eb6fbea-73ee-4a8e-9042-110704768d7f}'
+    arguments: '{{ w10sdk_args }}'
+    path: "{{ download_path }}\\w10sdk.exe"
+
+  - name: Tortoise svn
+    url: http://rwthaachen.dl.osdn.jp/storage/g/t/to/tortoisesvn/1.10.3/Application/TortoiseSVN-1.10.3.28489-x64-svn-1.10.4.msi
+    product_id: '{629C95E8-10D9-4F05-8958-DC66A5A72925}'
+    arguments: "{{ svn_args }}"
+    path: "{{ download_path }}\\svn.msi"
+
+  - name: MSYS2
+    url: http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20161025.exe
+    product_id: '{5c589d88-01bd-48fd-9fe6-32b8063be7a2}'
+    creates_path: "{{ msys2_path }}"
+    arguments: '{{ msys2_args }}'
+    path: "{{ download_path }}\\msys2.exe"
+ 
+  - name: QT 5.9
+    url: https://download.qt.io/official_releases/qt/5.9/5.9.8/qt-opensource-windows-x86-5.9.8.exe
+    product_id: '{88d6f945-e1bf-4b45-96d3-3568988b15de}'
+    creates_path: "{{ qt_path }}"
+    arguments: '{{ qt_args }}'
+
+    path: "{{ download_path }}\\qt.exe"
+
+mingw_packages:
+  - name: Mingw
+    url: https://netix.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-win32/seh/x86_64-8.1.0-release-win32-seh-rt_v6-rev0.7z
+    path: "{{ download_path }}\\mingw.7z"
+
+exec_path:
+  - '%SystemDrive%\Python27'
+  - '{{ qt_path }}\5.9.8\msvc2015_64\bin'
+  - '{{ mingw_path }}\mingw64\bin'
+  - '{{ msys2_path }}\usr\bin'
+  - '{{ program_files_64 }}\7-Zip'
+  - '{{ program_files_64 }}\Git\bin'
+  - '{{ program_files_64 }}\TortoiseSVN\bin'
+  - '%SystemDrive%\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm'
+  - '{{ program_files_32 }}\Inno Setup 5'
+  - '{{ program_files_32 }}\Microsoft Visual Studio 14.0\VC\bin'
+
+innosetup_path: "{{ program_files_32 }}\\Inno Setup 5"

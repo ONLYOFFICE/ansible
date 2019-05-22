@@ -14,6 +14,7 @@ msys2_args: '--platform minimal --script {{ msys2_auto_install }}'
 qt_auto_install: "{{ download_path }}\\qt-auto-install.qs"
 qt_args: '--script {{ qt_auto_install }}'
 qt_path: C:\Qt\Qt5.9.8
+msys2_path: C:\Msys
 mingw_path: C:\Mingw
 
 npm_path: C:\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm

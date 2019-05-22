@@ -1,3 +1,6 @@
+- name: Include windows architecture variables.
+  include_vars: "{{ win_target }}.yaml"
+
 - name: Create download directory
   win_file:
     path: "{{ download_path }}"
@@ -18,9 +21,14 @@
     src: 'vs/vs.xml.jn2'
     dest: '{{ vs_auto_install }}'
 
-- name: Download msys2 auto-install.js
-  win_get_url:
-    url: https://raw.githubusercontent.com/msys2/msys2-installer/master/auto-install.js
+# - name: Download msys2 auto-install.js
+#   win_get_url:
+#     url: https://raw.githubusercontent.com/msys2/msys2-installer/master/auto-install.js
+#     dest: '{{ msys2_auto_install }}'
+
+- name: Get msys2-auto-install.qs
+  win_template:
+    src: 'msys/msys2-auto-install.qs.jn2'
     dest: '{{ msys2_auto_install }}'
 
 - name: Get qt-auto-install.qs
@@ -32,7 +40,8 @@
   win_package:
     name: "{{ item.name }}"
     path: "{{ item.path }}"
-    product_id: "{{ item.product_id }}"
+    product_id: "{{ item.product_id|default(omit) }}"
+    creates_path: "{{ item.creates_path|default(omit) }}"
     arguments: "{{ item.arguments }}"
   when: item.product_id is defined
   with_items:
@@ -52,7 +61,7 @@
   register: mingw_path_stat
 
 - name: Install mingw packages
-  win_command: "\"C:\\Program Files\\7-Zip\\7z.exe\" x {{ mingw_packages[0].path }} -o{{ mingw_path }}"
+  win_command: "\"{{ program_files }}\\7-Zip\\7z.exe\" x {{ mingw_packages[0].path }} -o{{ mingw_path }}"
   args:
     creates: "{{ mingw_path }}"
 
