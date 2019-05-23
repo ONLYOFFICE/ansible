@@ -89,7 +89,7 @@ exec_path:
   - '{{ mingw_path }}\mingw64\bin'
   - '{{ msys2_path }}\usr\bin'
   - '{{ program_files_64 }}\7-Zip'
-  - '{{ program_files_64 }}\Git\bin'
+  - '{{ program_files_64 }}\Git\cmd'
   - '{{ program_files_64 }}\TortoiseSVN\bin'
   - '%SystemDrive%\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm'
   - '{{ program_files_32 }}\Inno Setup 5'
