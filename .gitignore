@@ -1,3 +1,5 @@
 *.retry
 .vscode/*
+files/ssl/*.cert
+files/ssl/*.key
 roles/exe-signer/files/certs/*.pfx
