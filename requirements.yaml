@@ -1,5 +1,11 @@
+- src: geerlingguy.apache
 - src: geerlingguy.docker
+- src: geerlingguy.java
+- src: geerlingguy.jenkins
 - src: geerlingguy.nodejs
+- src: geerlingguy.nginx
 - src: geerlingguy.ntp
 - src: geerlingguy.pip
+- src: geerlingguy.svn
 - src: kamaln7.swapfile
+- src: jdauphant.ssl-certs
