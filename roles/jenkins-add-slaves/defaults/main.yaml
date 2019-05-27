@@ -1,0 +1,24 @@
+jenkins_private_keyname: id_rsa
+jenkins_keys_size: 2048
+
+jenkins_ssh_slave_user: jenkins
+jenkins_ssh_slave_home: "/home/{{ jenkins_ssh_slave_user }}"
+jenkins_ssh_slave_credid: "{{ jenkins_ssh_slave_user }}-ssh-key"
+
+jenkins_ssh_slaves_name: buildserver-linux-slaves
+
+jenkins_ssh_slave_group: "{{ groups[jenkins_ssh_slaves_name]|default([''])}}"
+jenkins_ssh_slave: "{%- set ips = [] %}
+    {%- for host in jenkins_ssh_slave_group %}
+    {{- ips.append(dict(host=host, ips=hostvars[host]['ansible_all_ipv4_addresses']|default([]))) }}
+    {%- endfor %}
+    {{- ips -}}"
+
+jenkins_win_slaves_name: buildserver-windows-slaves
+jenkins_win_slave_group: "{{ groups[jenkins_win_slaves_name]|default([''])}}"
+jenkins_win_slave_home: C:\jws
+jenkins_win_slave_agent: "{{ jenkins_win_slave_home }}\\agent.jar"
+jenkins_win_slave_agent_desc: "{{ jenkins_win_slave_home }}\\slave-agent.jnlp"
+
+jenkins_slave_labels: []
+jenkins_slave_property: []

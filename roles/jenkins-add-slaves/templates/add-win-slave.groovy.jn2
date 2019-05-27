@@ -1,0 +1,50 @@
+import java.lang.System
+import java.util.ArrayList
+import hudson.model.Node.Mode
+import hudson.slaves.*
+import jenkins.slaves.RemotingWorkDirSettings
+import hudson.slaves.EnvironmentVariablesNodeProperty.Entry
+import hudson.plugins.sshslaves.*
+import hudson.plugins.sshslaves.verifiers.KnownHostsFileKeyVerificationStrategy
+import jenkins.model.Jenkins
+
+// The "build" object is added by the Jenkins Groovy plugin and can resolve parameters and such
+String agentDescription = ""
+String agentHome = "{{ jenkins_win_slave_home | replace('\\', '\\\\') }}"
+String agentExecutors = ""
+
+RemotingWorkDirSettings rwdSettings = new RemotingWorkDirSettings(false, // Disable WorkDir
+                                                                 "", // Custom WorkDir path
+                                                                 "remoting", // Internal data directory
+                                                                 true) // Fail if workspace is missing
+
+JNLPLauncher jnlpLauncher = new JNLPLauncher("", // Tunnel connection through
+                                            "", // JVM options
+                                            rwdSettings)
+
+{% for host in jenkins_win_slave_group %}
+String agentList_{{ loop.index }} = "{{ host }}"
+
+List<Entry> env_{{ loop.index }} = new ArrayList<Entry>()
+
+  {% set hostloop = loop %}
+  {% for prop in hostvars[host].jenkins_slave_property %}
+  env_{{ hostloop.index }}.add(new Entry("{{ prop.key }}","{{ prop.value }}"))
+  {% endfor %}
+
+EnvironmentVariablesNodeProperty envPro_{{ loop.index }} = new EnvironmentVariablesNodeProperty(env_{{ loop.index }})
+
+DumbSlave dumb_{{ loop.index }} = new DumbSlave(agentList_{{ loop.index }},  // Agent name, usually matches the host computer's machine name
+        agentDescription,           // Agent description
+        agentHome,                  // Workspace on the agent's computer
+        agentExecutors,             // Number of executors
+        Mode.EXCLUSIVE,             // "Usage" field, EXCLUSIVE is "only tied to node", NORMAL is "any"
+        "{{ hostvars[host].jenkins_slave_labels|join(' ') }}", // Labels
+        jnlpLauncher,  // Launch strategy, JNLP is the Java Web Start setting services use
+        RetentionStrategy.INSTANCE, // Is the "Availability" field and INSTANCE means "Always"
+        new LinkedList())
+
+dumb_{{ loop.index }}.getNodeProperties().add(envPro_{{ loop.index }})
+
+Jenkins.instance.addNode(dumb_{{ loop.index }}) 
+{% endfor %}

@@ -1,0 +1,58 @@
+import java.lang.System
+import java.util.ArrayList
+import hudson.model.Node.Mode
+import hudson.slaves.*
+import hudson.slaves.EnvironmentVariablesNodeProperty.Entry
+import hudson.plugins.sshslaves.*
+import hudson.plugins.sshslaves.verifiers.KnownHostsFileKeyVerificationStrategy
+import jenkins.model.Jenkins
+
+
+for (aSlave in Jenkins.instance.nodes) { 
+  println("SLAVE DELETED: " + aSlave.name) 
+  Jenkins.instance.removeNode(aSlave) 
+}
+
+// The "build" object is added by the Jenkins Groovy plugin and can resolve parameters and such
+String agentDescription = ""
+String agentHome = "{{ jenkins_ssh_slave_home }}"
+String agentExecutors = ""
+
+{% for host in jenkins_ssh_slave_group %}
+String agentList_{{ loop.index }} = "{{ host }}"
+
+ComputerLauncher launcher_{{ loop.index }} = new SSHLauncher("{{ host }}", // The host to connect to
+                                   22,      // The port to connect on
+                                   "{{ jenkins_ssh_slave_credid }}",    // The credentials id to connect as
+                                   "",      // Options passed to the java vm
+                                   "",      // Path to the host jdk installation
+                                   "",      // This will prefix the start slave command
+                                   "",      // This will suffix the start slave command
+                                   null,    // Launch timeout in seconds
+                                   null,    // The number of times to retry connection if the SSH connection is refused
+                                   null,    // The number of seconds to wait between retries
+                                   new KnownHostsFileKeyVerificationStrategy())
+
+List<Entry> env_{{ loop.index }} = new ArrayList<Entry>()
+
+  {% set hostloop = loop %}
+  {% for prop in hostvars[host].jenkins_slave_property %}
+  env_{{ hostloop.index }}.add(new Entry("{{ prop.key }}","{{ prop.value }}"))
+  {% endfor %}
+
+EnvironmentVariablesNodeProperty envPro_{{ loop.index }} = new EnvironmentVariablesNodeProperty(env_{{ loop.index }})
+
+DumbSlave dumb_{{ loop.index }} = new DumbSlave(agentList_{{ loop.index }},  // Agent name, usually matches the host computer's machine name
+        agentDescription,           // Agent description
+        agentHome,                  // Workspace on the agent's computer
+        agentExecutors,             // Number of executors
+        Mode.EXCLUSIVE,             // "Usage" field, EXCLUSIVE is "only tied to node", NORMAL is "any"
+        "{{ hostvars[host].jenkins_slave_labels|join(' ') }}", // Labels
+        launcher_{{ loop.index }},  // Launch strategy, JNLP is the Java Web Start setting services use
+        RetentionStrategy.INSTANCE, // Is the "Availability" field and INSTANCE means "Always"
+        new LinkedList())
+
+dumb_{{ loop.index }}.getNodeProperties().add(envPro_{{ loop.index }})
+
+Jenkins.instance.addNode(dumb_{{ loop.index }}) 
+{% endfor %}

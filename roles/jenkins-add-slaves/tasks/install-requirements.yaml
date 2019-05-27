@@ -1,0 +1,11 @@
+- name: install req
+  apt:
+    name: python-pip
+  become: yes
+
+- name: Install python modules
+  pip: 
+    name:
+      - pyOpenSSL
+      - lxml
+  become: yes

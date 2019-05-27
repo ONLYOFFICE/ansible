@@ -1,0 +1,57 @@
+- name: Create jenkin directory on remote windows host
+  win_file:
+    path: "{{ jenkins_win_slave_home }}"
+    state: directory
+  delegate_to: "{{ item }}" 
+  with_items:
+    - "{{ jenkins_win_slave_group }}"
+
+- name: Download agent.jar packages
+  win_get_url:
+    url: "{{ jenkins_url }}/jnlpJars/agent.jar"
+    dest: "{{ jenkins_win_slave_agent }}"
+    force: no
+  delegate_to: "{{ item }}" 
+  with_items:
+    - "{{ jenkins_win_slave_group }}"
+
+- name: Download slave-agent.jnlp file
+  get_url:
+    url: "{{ jenkins_url }}/computer/{{ item }}/slave-agent.jnlp"
+    dest: "{{ ansible_env.HOME  }}/{{ item }}.jnlp"
+    url_username: "{{ jenkins_admin_username }}"
+    url_password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    force: yes
+  with_items:
+    - "{{ jenkins_win_slave_group }}"
+
+- name: Read an secret value
+  xml:
+    path: "{{ ansible_env.HOME  }}/{{ item }}.jnlp"
+    xpath: '/jnlp/application-desc/argument[1]'
+    content: text
+  with_items:
+    - "{{ jenkins_win_slave_group }}"
+  register: jmpl_secret
+
+- debug:
+    var: jmpl_secret
+
+- name: create a task to run jenkins slave
+  win_scheduled_task:
+    name: Jenkins Slave
+    description: run jenkins slave agent
+    actions:
+    - path: java.exe
+      arguments: "-jar {{ jenkins_win_slave_agent }} -jnlpUrl {{ jenkins_url }}/computer/{{ item.0 }}/slave-agent.jnlp -secret {{ item.1.matches[0].argument }} -workDir {{ jenkins_win_slave_home }}"
+    triggers:
+    - type: boot
+    username: LOCAL SERVICE
+    state: present
+    execution_time_limit: P0Y0M0DT0H0M0S
+    enabled: yes
+  delegate_to: "{{ item.0 }}" 
+  with_together:
+    - "{{ jenkins_win_slave_group }}"
+    - "{{ jmpl_secret.results }}"

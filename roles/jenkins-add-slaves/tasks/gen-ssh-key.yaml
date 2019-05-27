@@ -1,0 +1,111 @@
+---
+
+- name: "Create a directory .ssh if it doesn't exist"
+  file:
+    path: "{{ jenkins_home }}/.ssh"
+    state: directory
+    mode: 0700
+  become: yes
+
+- name: "Ensure that openssh *private* key doesn't exist"
+  stat:
+    path: "{{ jenkins_home }}/.ssh/\
+    {{ jenkins_private_keyname }}"
+  become: yes
+  register: private_key_stat
+
+- name: "Ensure that openssh *public* key doesn't exist"
+  stat:
+    path: "{{ jenkins_home }}/.ssh/\
+    {{ jenkins_private_keyname }}.pub"
+  become: yes
+  register: public_key_stat
+
+- name: "Generate openssl private key for user jenkins"
+  openssl_privatekey:
+    path: "{{ jenkins_home }}/.ssh/\
+    {{ jenkins_private_keyname }}"
+    size: "{{ jenkins_keys_size }}"
+  become: yes
+  when: not private_key_stat.stat.exists|bool
+
+- name: "Generate openssl public key for user jenkins"
+  openssl_publickey:
+    path: "{{ jenkins_home }}/.ssh/\
+    {{ jenkins_private_keyname }}.pub"
+    privatekey_path: "{{ jenkins_home }}/.ssh/\
+    {{ jenkins_private_keyname }}"
+    format: OpenSSH
+  become: yes
+  when: not public_key_stat.stat.exists|bool
+
+- name: "Get public key content"
+  command: "cat {{ jenkins_home }}/.ssh/\
+  {{ jenkins_private_keyname }}.pub"
+  register: ssh_public_key_fingerprint
+  become: yes
+  changed_when: False
+
+- name: "Create user on remote host"
+  user:
+    name: "{{ jenkins_ssh_slave_user }}"
+    home: "{{ jenkins_ssh_slave_home }}"
+    state: present
+  delegate_to: "{{ item }}"
+  become: yes
+  with_items:
+    - "{{ jenkins_ssh_slave_group }}"
+
+- name: "Set authorized key on remote host"
+  authorized_key:
+    user: "{{ jenkins_ssh_slave_user }}"
+    state: present
+    key: "{{ ssh_public_key_fingerprint.stdout }}"
+  delegate_to: "{{ item }}"
+  become: yes
+  with_items:
+    - "{{ jenkins_ssh_slave_group }}"
+
+- name: Turn off verification by ip
+  lineinfile:
+    path: "{{ jenkins_home }}/.ssh/config"
+    line: CheckHostIP=no
+    regexp: '^CheckHostIP='
+    create: yes
+    mode: 0644
+  become: yes
+
+- name: "Generate knownhost pairs"
+  command: "ssh-keyscan -t rsa {{ item }}"
+  register: result_knownhost
+  with_items:
+    - "{{ jenkins_ssh_slave_group }}"
+  changed_when: yes
+
+- debug:
+    var: result_knownhost
+
+- name: "Tell the host about our servers it might want to ssh to"
+  lineinfile:
+    path: "{{ jenkins_home }}/.ssh/known_hosts"
+    line: "{{ item.item|lower }},{{ item.stdout }}"
+    create: yes
+    mode: 0644
+  become: yes
+  with_items:
+    - "{{ result_knownhost.results }}"
+
+- name: "Set corect folders owners/permissions"
+  file:
+    path: "{{ item.dst }}"
+    owner: "{{ jenkins_process_user }}"
+    group: "{{ jenkins_process_user }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  with_items:
+    - {dst: "{{ jenkins_home }}/.ssh", mode: "0700"}
+    - {dst: "{{ jenkins_home }}/.ssh/\
+        {{ jenkins_private_keyname }}", mode: "0600"}
+    - {dst: "{{ jenkins_home }}/.ssh/\
+        {{ jenkins_private_keyname }}.pub", mode: "0600"}
+    - {dst: "{{ jenkins_home }}/.ssh/known_hosts", mode: "0644"}
