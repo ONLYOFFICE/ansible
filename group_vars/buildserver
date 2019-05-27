@@ -1,0 +1,94 @@
+java_packages:
+    - openjdk-8-jdk
+
+jenkins_home: /var/lib/jenkins
+jenkins_process_user: jenkins
+jenkins_process_group: "{{ jenkins_process_user }}"
+
+jenkins_admin_username: admin
+jenkins_admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32613733623730616334336536633539663439326262326235373862383630346661393136666338
+          6666363964383038386233393634623734316166633530340a366130346630303665373864613737
+          62656639356339393465346439623331383736353838323137636563356138353731656633386139
+          6366326665303263350a653039373738343537326130396161303663616334303366316233643162
+          3434
+
+jenkins_url: "https://{{ groups.buildserver[0] }}"
+
+jenkins_http_port: 8080
+
+jenkins_repo_url: deb http://pkg.jenkins-ci.org/debian-stable binary/
+jenkins_repo_key_url: http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key
+
+jenkins_plugins:
+  - configuration-as-code
+  - github
+  - github-oauth
+  - multi-branch-project-plugin
+  - ssh-slaves
+  - workflow-aggregator
+
+jenkins_ssh_slave_user: "{{ jenkins_process_user }}"
+
+aws_cli_user: "{{ jenkins_process_user }}"
+aws_cli_user_home: "{{ jenkins_home }}"
+aws_cli_region: "eu-west-1"
+
+ssh_home: "{{ jenkins_home }}"
+ssh_user: "{{ jenkins_process_user }}"
+
+aws_cli_access_key_id: "AKIA6QUHBSFSINKXSISD"
+aws_cli_secret_access_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64353039376666643163643162313665313935383664346562353061653936346234653961633365
+          6132363631306163376462373933653437366465656134360a616131333932613339663235633232
+          66306666393836613864623363623332353766306132343263316462303134373865663337656162
+          6563383336373438620a393665613634333962666263653938353564373039663231313734633632
+          64393566656565376561373638313833633435383265666234323538633939653965343039363162
+          3664313166336436323765653739373733366134633235616536
+
+jenkins_github_auth_clientid: "76d19efd377e0c2a3872"
+jenkins_github_auth_clientsecret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35333030666437666565366336353664383738636634306161306333643663633537336132396162
+          3836326437666364366433323461386235333436393864610a383535613264333631363837303665
+          35326565316261343438663531353737643633336539333735633934626263653466346335356435
+          3366366136653662300a633864643333663633393532386138383238616530393337373764626632
+          62396638613532386365623664313530356534313930616463376562313437626661323361666365
+          3730366462663534633764306633633666393064623738336531
+jenkins_github_auth_oauthscopes: "read:org,user:email,repo"
+jenkins_github_auth_admins: "agolybev"
+jenkins_github_auth_org: "ONLYOFFICE"
+
+ssl_certs_local_cert_path: files/ssl/teamlab.info.cert
+ssl_certs_local_privkey_path: files/ssl/teamlab.info.key
+
+ssl_certs_generate_self_signed: false
+
+nginx_vhosts:
+  - listen: "443 ssl http2"
+    server_name: "{{ groups.buildserver[0] }}"
+    state: "present"
+    filename: "{{ groups.buildserver[0] }}.443.conf"
+    extra_parameters: |
+      location  / {
+          proxy_set_header X-Forwarded-Host $http_host;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_pass http://localhost:8080;
+      }
+      ssl_certificate     {{ ssl_certs_cert_path }};
+      ssl_certificate_key {{ ssl_certs_privkey_path }};
+      ssl_protocols       TLSv1.1 TLSv1.2;
+      ssl_ciphers         "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+
+  - listen: "80"
+    server_name: "{{ groups.buildserver[0] }}"
+    return: "301 https://{{ groups.buildserver[0] }}$request_uri"
+    filename: "{{ groups.buildserver[0] }}.80.conf"
+
+s3_backup_bucket: backup-jenkins.teamlab.info
+s3_backup_key_prefix: jenkins
+s3_backup_file_root: "{{ jenkins_home }}/jobs"
+s3_backup_special_time: daily
+s3_backup_user: "{{ jenkins_process_user }}"

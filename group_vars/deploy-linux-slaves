@@ -1,0 +1,4 @@
+jenkins_slave_labels:
+    - linux
+
+jenkins_slave_property: []

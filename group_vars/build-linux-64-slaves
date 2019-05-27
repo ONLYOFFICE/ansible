@@ -1,0 +1,15 @@
+jenkins_slave_labels:
+    - linux
+    - linux_64
+
+jenkins_slave_property:
+    - key: MAKEFLAGS
+      value: "-e -j 4"
+    - key: QT_3RDPARTY_LIBS
+      value: /usr/lib/x86_64-linux-gnu
+    - key: QT_PATH
+      value: /usr/local/Qt-5.9.8
+    - key: QT_PLUGINS
+      value: /usr/local/Qt-5.9.8/plugins
+    - key: QT_SELECT
+      value: qt

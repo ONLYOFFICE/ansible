@@ -1,0 +1,34 @@
+---
+- hosts: buildserver-linux-slaves
+
+- hosts: buildserver-windows-slaves
+
+- hosts: buildserver
+
+  roles:
+   - role: jenkins-basic-auth
+
+- hosts: buildserver
+
+  roles:
+    - role: kamaln7.swapfile
+    - role: geerlingguy.ntp
+    - role: jdauphant.ssl-certs
+    - role: geerlingguy.nginx
+    - role: geerlingguy.java
+    - role: geerlingguy.jenkins
+
+- hosts: buildserver
+
+  roles:
+   - role: jenkins-add-slaves
+   - role: jenkins-github-auth
+   - role: github-user
+   - role: aws-cli
+#    - role: s3-backup
+
+- hosts: build-linux-slaves
+
+  roles:
+   - github-user
+   - aws-cli
