@@ -27,8 +27,9 @@ deb_packages:
   - wget
   - unzip
 
-java_repo: ppa:webupd8team/java
-java_package: oracle-java8-installer
+java_repo: ppa:linuxuprising/java
+java_package: oracle-java11-installer
+java_debconf_license: shared/accepted-oracle-license-v1-2
 
 qt_repo: ppa:beineri/opt-qt596-trusty
 qt_package: qt59-meta-full

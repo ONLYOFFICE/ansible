@@ -13,7 +13,7 @@
 - name: Accept java license
   debconf:
     name: "{{ java_package }}"
-    question: shared/accepted-oracle-license-v1-1
+    question: "{{ java_debconf_license }}"
     value: "true"
     vtype: select
   become: yes
@@ -21,18 +21,10 @@
 - name: Set java license as seen
   debconf:
     name: "{{ java_package }}"
-    question: shared/accepted-oracle-license-v1-1
+    question: "{{ java_debconf_license }}"
     value: true
     vtype: seen
   become: yes
-
-# - name: Set java license as seen
-#   debconf:
-#     name: "{{ java_package }}"
-#     question: shared/present-oracle-license-v1-1
-#     value: true
-#     vtype: seen
-#   become: yes
 
 - name: Install java installer
   apt:
