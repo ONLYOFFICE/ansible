@@ -28,6 +28,7 @@ jenkins_plugins:
   - multi-branch-project-plugin
   - ssh-slaves
   - workflow-aggregator
+  - htmlpublisher
 
 jenkins_ssh_slave_user: "{{ jenkins_process_user }}"
 
