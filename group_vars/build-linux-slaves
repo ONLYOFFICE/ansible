@@ -12,3 +12,6 @@ aws_cli_region: "eu-west-1"
 
 swapfile_size: "{{ ansible_memtotal_mb }}MB"
 nodejs_version: "8.x"
+
+ssh_home: "/home/{{ ssh_user }}"
+ssh_user: "jenkins"
