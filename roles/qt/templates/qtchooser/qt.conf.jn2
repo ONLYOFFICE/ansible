@@ -1,2 +1,2 @@
-/usr/local/Qt-{{ qt_release }}/bin
-/usr/local/Qt-{{ qt_release }}/lib
+{{ qt_install_path }}/bin
+{{ qt_install_path }}/lib

@@ -5,7 +5,8 @@ qt_src_dest: "./{{ qt_src_dir }}"
 qt_src_arch: "{{ qt_src_dir }}.tar.xz"
 qt_src_url: "http://download.qt.io/official_releases/qt/{{ qt_version }}/{{ qt_release }}/single/{{ qt_src_arch }}"
 qtchooser_conf_path: /etc/xdg/qtchooser/qt.conf
-
+qt_install_path: /usr/local/Qt-{{ qt_release }}/gcc_64
+qt_conf_opt: "-opensource -confirm-license -release -shared -accessibility -prefix {{ qt_install_path }} -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -no-sql-sqlite -no-qml-debug -gstreamer 1.0 -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtserialport -skip qtsensors -skip qtxmlpatterns -skip qt3d -skip qtwebview -skip qtwebengine"
 qt_build_sourcecode_packages:
   - "bzip2"
   - "gzip"

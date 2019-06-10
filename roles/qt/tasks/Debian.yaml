@@ -26,7 +26,7 @@
     creates: "{{ qt_src_dest }}"
 
 - name: configure qt source
-  shell: ./configure -opensource -confirm-license -release -shared -accessibility -qt-zlib -qt-libpng -qt-libjpeg -qt-xcb -qt-pcre -no-sql-sqlite -no-qml-debug -gstreamer 1.0 -nomake examples -nomake tests -skip qtenginio -skip qtlocation -skip qtserialport -skip qtsensors -skip qtxmlpatterns -skip qt3d -skip qtwebview -skip qtwebengine
+  shell: "./configure {{ qt_conf_opt }}"
   args:
     chdir: "{{ qt_src_dest }}"
     creates: "{{ qt_src_dest }}/Makefile"
