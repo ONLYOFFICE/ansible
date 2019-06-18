@@ -1,0 +1,5 @@
+---
+s3_backup_bucket:
+s3_backup_key_prefix:
+s3_backup_file_root:
+s3_backup_special_time: daily

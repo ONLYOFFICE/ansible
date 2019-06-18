@@ -1,0 +1,25 @@
+---
+- name: Create folder for restore
+  file:
+    path: "{{ s3_backup_file_root }}"
+    owner: "{{ s3_backup_user }}"
+    group: "{{ s3_backup_user }}"
+    mode: '0700'
+    state: directory
+  become: yes
+#  become_user: "{{ s3_backup_user }}"
+
+- name: Restore s3 folder
+  shell: "aws s3 sync s3://{{ s3_backup_bucket }}/{{ s3_backup_key_prefix }}/latest {{ s3_backup_file_root }} > /dev/null && touch {{ s3_backup_file_root }}/.backup"
+  args:
+    creates: "{{ s3_backup_file_root }}/.backup"
+  become: yes
+  become_user: "{{ s3_backup_user }}"
+
+- name: Create backup cron task
+  cron:
+    name: s3 backup
+    special_time: "{{ s3_backup_special_time }}"
+    user: "{{ s3_backup_user }}"
+    job: "/usr/local/bin/aws s3 sync {{ s3_backup_file_root }} s3://{{ s3_backup_bucket }}/{{ s3_backup_key_prefix }}/latest --delete --no-follow-symlinks > /dev/null && /usr/local/bin/aws s3 sync s3://{{ s3_backup_bucket }}/{{ s3_backup_key_prefix }}/latest s3://{{ s3_backup_bucket }}/{{ s3_backup_key_prefix }}/backup-$(date +\\%F) > /dev/null"
+  become: yes
