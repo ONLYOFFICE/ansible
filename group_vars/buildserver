@@ -23,6 +23,7 @@ jenkins_repo_key_url: http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key
 
 jenkins_plugins:
   - configuration-as-code
+  - envinject
   - github
   - github-oauth
   - multi-branch-project-plugin
