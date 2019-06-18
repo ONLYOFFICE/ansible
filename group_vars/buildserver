@@ -31,6 +31,8 @@ jenkins_plugins:
   - workflow-aggregator
   - htmlpublisher
 
+jenkins_plugins_state: latest
+
 jenkins_ssh_slave_user: "{{ jenkins_process_user }}"
 
 aws_cli_user: "{{ jenkins_process_user }}"
