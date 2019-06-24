@@ -31,7 +31,7 @@ jenkins_plugins:
   - workflow-aggregator
   - htmlpublisher
 
-jenkins_plugins_state: latest
+jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow"
 
 jenkins_ssh_slave_user: "{{ jenkins_process_user }}"
 
