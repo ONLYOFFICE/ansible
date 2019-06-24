@@ -43,6 +43,10 @@
     target: install
   become: yes
 
+- name: Copy icu libs
+  shell: cp -a /usr/lib/x86_64-linux-gnu/libicu*.so* {{ qt_install_path }}/lib
+  become: yes
+
 - name: create qtchooser config directory
   file:
     path: "{{ qtchooser_conf_path | dirname }}"
