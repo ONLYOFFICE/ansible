@@ -85,12 +85,16 @@
 - debug:
     var: result_knownhost
 
+- name: "Create known_hosts"
+  file:
+    path: "{{ jenkins_home }}/.ssh/known_hosts"
+    state: touch
+  become: yes
+
 - name: "Tell the host about our servers it might want to ssh to"
   lineinfile:
     path: "{{ jenkins_home }}/.ssh/known_hosts"
     line: "{{ item.item|lower }},{{ item.stdout }}"
-    create: yes
-    mode: 0644
   become: yes
   with_items:
     - "{{ result_knownhost.results }}"
