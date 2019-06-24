@@ -27,6 +27,7 @@ jenkins_plugins:
   - github
   - github-oauth
   - multi-branch-project-plugin
+  - matrix-auth
   - ssh-slaves
   - workflow-aggregator
   - htmlpublisher
