@@ -29,5 +29,6 @@ ansible_winrm_server_cert_validation: ignore
 jenkins_slave_labels:
     - win
     - "{{ win_target }}"
+    - "{{ win_target }}_xp"
 
 jenkins_slave_property: []

@@ -36,6 +36,11 @@
     src: 'qti/qt-auto-install.qs.jn2'
     dest: '{{ qt_auto_install }}'
 
+- name: Get qt56-auto-install.qs
+  win_template:
+    src: 'qti/qt56-auto-install.qs.jn2'
+    dest: '{{ qt56_auto_install }}'
+
 - name: Install packages GUIDed packages
   win_package:
     name: "{{ item.name }}"

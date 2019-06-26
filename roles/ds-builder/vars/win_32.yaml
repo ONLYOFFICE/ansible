@@ -77,6 +77,13 @@ packages:
     arguments: '{{ qt_args }}'
     path: "{{ download_path }}\\qt.exe"
 
+  - name: QT 5.6
+    url: http://download.qt.io/archive/qt/5.6/5.6.3/qt-opensource-windows-x86-msvc2015-5.6.3.exe
+    product_id: '{a6de10bd-9db8-4d6b-bb0b-22bc2da648b0}'
+    creates_path: "{{ qt56_path }}"
+    arguments: '{{ qt56_args }}'
+    path: "{{ download_path }}\\qt56.exe"
+
 mingw_packages:
   - name: Mingw
     url: https://vorboss.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/8.1.0/threads-win32/sjlj/i686-8.1.0-release-win32-sjlj-rt_v6-rev0.7z
