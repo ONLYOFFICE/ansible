@@ -22,12 +22,14 @@ jenkins_repo_url: deb http://pkg.jenkins-ci.org/debian-stable binary/
 jenkins_repo_key_url: http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key
 
 jenkins_plugins:
+  - ansible
   - configuration-as-code
   - envinject
   - github
   - github-oauth
   - multi-branch-project-plugin
   - matrix-auth
+  - matrix-combinations-parameter
   - ssh-slaves
   - workflow-aggregator
   - htmlpublisher
