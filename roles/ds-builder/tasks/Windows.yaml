@@ -1,6 +1,14 @@
 - name: Include windows architecture variables.
   include_vars: "{{ win_target }}.yaml"
 
+- name: Remove Windows Defender
+  win_feature:
+    name: Windows-Defender
+    state: absent
+  register: win_feature
+  changed_when: win_feature.reboot_required
+  notify: restart-server
+
 - name: Create download directory
   win_file:
     path: "{{ download_path }}"
