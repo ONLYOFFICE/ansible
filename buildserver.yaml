@@ -32,3 +32,9 @@
   roles:
    - github-user
    - aws-cli
+
+- hosts: build-windows-slaves
+
+  tasks:
+   - name: Reboot windows slave to reconnect it to jenkins
+     win_reboot:
