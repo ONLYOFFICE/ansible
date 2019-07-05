@@ -23,16 +23,18 @@ jenkins_repo_key_url: http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key
 
 jenkins_plugins:
   - ansible
-  - configuration-as-code
+  - ansicolor
+  - conditional-buildstep
   - envinject
   - github
   - github-oauth
+  - htmlpublisher
   - multi-branch-project-plugin
   - matrix-auth
   - matrix-combinations-parameter
   - ssh-slaves
+  - timestamper
   - workflow-aggregator
-  - htmlpublisher
 
 jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow"
 
