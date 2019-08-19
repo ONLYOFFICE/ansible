@@ -1,3 +1,6 @@
+docker_users:
+    - "{{ ssh_user }}"
+
 jenkins_slave_labels:
     - linux
     - linux_64
