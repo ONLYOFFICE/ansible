@@ -19,3 +19,4 @@
 
   roles:
     - geerlingguy.docker
+    - dockerhub-user

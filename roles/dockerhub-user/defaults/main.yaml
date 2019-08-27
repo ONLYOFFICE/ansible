@@ -1,0 +1,3 @@
+ssh_user: "{{ ansible_user }}"
+dockerhub_user: user
+dockerhub_pwd: password

@@ -1,0 +1,15 @@
+- name: Install requred packages
+  apt:
+    name: python-pip
+
+- name: Install awscli python package.
+  pip:
+    name: docker-py
+  become: yes
+
+- name: Log into DockerHub
+  docker_login:
+    username: "{{ dockerhub_user }}"
+    password: "{{ dockerhub_pwd }}"
+  become: yes
+  become_user: "{{ ssh_user }}"
