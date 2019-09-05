@@ -34,7 +34,7 @@ packages:
       Cookie: "oraclelicense=accept-securebackup-cookie"
 
   - name: Node.js
-    url: https://nodejs.org/dist/latest-v8.x/node-v8.16.0-x86.msi
+    url: https://nodejs.org/dist/v8.16.0/node-v8.16.0-x86.msi
     product_id: '{3EBDA3D6-92BC-44DB-BCB2-9D31DB275BB6}'
     arguments: '{{ msi_args }}'
     path: "{{ download_path }}\\node.msi"
