@@ -22,6 +22,7 @@
 
   roles:
    - role: jenkins-add-slaves
+   - role: jenkins-setup
    - role: jenkins-github-auth
    - role: github-user
    - role: aws-cli

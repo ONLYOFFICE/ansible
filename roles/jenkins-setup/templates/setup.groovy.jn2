@@ -1,0 +1,15 @@
+import jenkins.model.Jenkins
+import jenkins.model.JenkinsLocationConfiguration
+import hudson.security.csrf.DefaultCrumbIssuer
+
+// set up CSRF Protection
+Jenkins.instance.setCrumbIssuer(new DefaultCrumbIssuer(true))
+Jenkins.instance.save()
+
+// set up jenkins location and admin email
+def jenkinsLocationConfiguration = JenkinsLocationConfiguration.get()
+
+jenkinsLocationConfiguration.setUrl("{{ jenkins_url }}")
+jenkinsLocationConfiguration.setAdminAddress("{{ jenkins_admin_mail }}")
+
+jenkinsLocationConfiguration.save()
