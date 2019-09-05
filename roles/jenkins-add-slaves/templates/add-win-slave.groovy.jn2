@@ -48,3 +48,7 @@ dumb_{{ loop.index }}.getNodeProperties().add(envPro_{{ loop.index }})
 
 Jenkins.instance.addNode(dumb_{{ loop.index }}) 
 {% endfor %}
+
+// enable TCP port for JNLP agents
+Jenkins.instance.setSlaveAgentPort(0) // 0 to indicate random available
+Jenkins.instance.save()
