@@ -1,0 +1,11 @@
+---
+
+- name: Check remote directory
+  win_file:
+    path: "{{ license_path }}"
+    state: directory
+
+- name: Copy license to remote directory
+  win_copy: 
+    src: license/
+    dest: "{{ license_path }}"

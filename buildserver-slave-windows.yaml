@@ -8,3 +8,4 @@
     - { role: github-user }
     - { role: aws-cli, user_profile_path: "C:\\Msys" }
     - { role: github-user, user_profile_path: "C:\\Msys" }
+    - { role: vs-license }
