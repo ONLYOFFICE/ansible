@@ -39,7 +39,7 @@ jenkins_plugins:
   - timestamper
   - workflow-aggregator
 
-jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow"
+jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow -Dfile.encoding=UTF-8"
 
 jenkins_ssh_slave_user: "{{ jenkins_process_user }}"
 
