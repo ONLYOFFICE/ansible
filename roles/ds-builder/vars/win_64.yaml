@@ -58,7 +58,7 @@ packages:
     path: "{{ download_path }}\\w10sdk.exe"
 
   - name: Tortoise svn
-    url: http://rwthaachen.dl.osdn.jp/storage/g/t/to/tortoisesvn/1.10.3/Application/TortoiseSVN-1.10.3.28489-x64-svn-1.10.4.msi
+    url: https://dotsrc.dl.osdn.net/osdn/storage/g/t/to/tortoisesvn/1.10.5/Application/TortoiseSVN-1.10.5.28651-x64-svn-1.10.6.msi
     product_id: '{629C95E8-10D9-4F05-8958-DC66A5A72925}'
     arguments: "{{ svn_args }}"
     path: "{{ download_path }}\\svn.msi"
