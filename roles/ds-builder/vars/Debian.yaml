@@ -28,7 +28,7 @@ deb_packages:
   - unzip
 
 java_repo: ppa:linuxuprising/java
-java_package: oracle-java12-installer
+java_package: oracle-java13-installer
 java_debconf_license: shared/accepted-oracle-license-v1-2
 
 qt_repo: ppa:beineri/opt-qt596-trusty
