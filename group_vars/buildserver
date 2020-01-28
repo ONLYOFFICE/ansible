@@ -35,7 +35,8 @@ jenkins_plugins:
   - multi-branch-project-plugin
   - matrix-auth
   - matrix-combinations-parameter
-  - ssh-slaves
+  - name: ssh-slaves
+    version: 1.30.0
   - timestamper
   - workflow-aggregator
 
