@@ -71,7 +71,8 @@ jenkins_github_auth_clientsecret: !vault |
           62396638613532386365623664313530356534313930616463376562313437626661323361666365
           3730366462663534633764306633633666393064623738336531
 jenkins_github_auth_oauthscopes: "read:org,user:email,repo"
-jenkins_github_auth_admins: "agolybev"
+jenkins_github_auth_admins:
+  - agolybev
 jenkins_github_auth_org: "ONLYOFFICE"
 
 ssl_certs_local_cert_path: files/ssl/teamlab.info.cert
