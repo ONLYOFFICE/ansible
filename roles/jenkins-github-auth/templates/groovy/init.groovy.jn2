@@ -29,7 +29,9 @@ authz_strategy_config = [
     strategy: 'ProjectMatrixAuthorizationStrategy',
     user_permissions: [
         {{ jenkins_github_auth_org }}: ['Overall Read', 'Job Read', 'Job Discover'],
-        {{ jenkins_github_auth_admins }}: ['Overall Administer']
+        {% for admin in jenkins_github_auth_admins %}
+        {{ admin }}: ['Overall Administer']{{ "," if not loop.last else "" }}
+        {% endfor %}
     ]
 ]
 
