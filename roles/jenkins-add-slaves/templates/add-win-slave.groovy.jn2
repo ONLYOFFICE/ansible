@@ -29,7 +29,7 @@ List<Entry> env_{{ loop.index }} = new ArrayList<Entry>()
 
   {% set hostloop = loop %}
   {% for prop in hostvars[host].jenkins_slave_property %}
-  env_{{ hostloop.index }}.add(new Entry("{{ prop.key }}","{{ prop.value }}"))
+  env_{{ hostloop.index }}.add(new Entry("{{ prop.key }}","{{ prop.value | replace('\\', '\\\\') }}"))
   {% endfor %}
 
 EnvironmentVariablesNodeProperty envPro_{{ loop.index }} = new EnvironmentVariablesNodeProperty(env_{{ loop.index }})
