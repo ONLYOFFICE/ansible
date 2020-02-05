@@ -10,23 +10,7 @@
     filename: java
   become: yes
 
-- name: Accept java license
-  debconf:
-    name: "{{ java_package }}"
-    question: "{{ java_debconf_license }}"
-    value: "true"
-    vtype: select
-  become: yes
-
-- name: Set java license as seen
-  debconf:
-    name: "{{ java_package }}"
-    question: "{{ java_debconf_license }}"
-    value: true
-    vtype: seen
-  become: yes
-
-- name: Install java installer
+- name: Install java
   apt:
     name: "{{ java_package }}"
     force: yes
