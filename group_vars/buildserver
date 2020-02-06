@@ -75,8 +75,8 @@ jenkins_github_auth_admins:
   - agolybev
 jenkins_github_auth_org: "ONLYOFFICE"
 
-ssl_certs_local_cert_path: files/ssl/teamlab.info.cert
-ssl_certs_local_privkey_path: files/ssl/teamlab.info.key
+ssl_certs_local_cert_path: files/ssl/cert.pem
+ssl_certs_local_privkey_path: files/ssl/privkey.key
 
 ssl_certs_generate_self_signed: false
 
