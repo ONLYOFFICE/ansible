@@ -89,22 +89,31 @@
     path: "{{ grunt_path }}"
   register: grunt_path_stat
 
+- name: Check is pkg installed
+  win_stat:
+    path: "{{ pkg_path }}"
+  register: pkg_path_stat
+
 - name: Get current npm path 
   win_command: "npm.cmd prefix -g"
   register: npm_path_stat
-  when: grunt_path_stat.stat.exists != true
+  when: grunt_path_stat.stat.exists != true or pkg_path_stat.stat.exists != true
 
 - name: Setup npm path 
   win_command: "npm.cmd config set prefix {{ npm_path }}"
-  when: grunt_path_stat.stat.exists != true
+  when: grunt_path_stat.stat.exists != true or pkg_path_stat.stat.exists != true
 
 - name: Install grunt
   win_command: "npm.cmd install grunt-cli -g"
   when: grunt_path_stat.stat.exists != true
 
+- name: Install pkg
+  win_command: "npm.cmd install pkg -g"
+  when: pkg_path_stat.stat.exists != true
+
 - name: Restore npm path 
   win_command: "npm.cmd config set prefix {{ npm_path_stat.stdout_lines[0] }}"
-  when: grunt_path_stat.stat.exists != true
+  when: grunt_path_stat.stat.exists != true or pkg_path_stat.stat.exists != true
 
 - name: Add or update registry path
   win_regedit:

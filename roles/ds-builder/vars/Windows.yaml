@@ -24,6 +24,7 @@ mingw_path: C:\Mingw
 
 npm_path: C:\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm
 grunt_path: "{{ npm_path }}\\grunt.cmd"
+pkg_path: "{{ npm_path }}\\pkg.cmd"
 
 innosetup_lang_path: "{{ innosetup_path }}\\Languages"
 

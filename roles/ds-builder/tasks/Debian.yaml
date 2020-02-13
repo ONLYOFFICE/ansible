@@ -44,3 +44,7 @@
 - name: Install grunt
   npm: name=grunt-cli global=yes
   become: yes
+
+- name: Install pkg
+  npm: name=pkg global=yes
+  become: yes
