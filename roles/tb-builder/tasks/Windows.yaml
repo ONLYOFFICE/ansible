@@ -1,0 +1,82 @@
+---
+
+- name: Remove Windows Defender
+  win_feature:
+    name: Windows-Defender
+    state: absent
+  register: win_feature
+  changed_when: win_feature.reboot_required
+  notify: restart-server
+
+- name: Create download directory
+  win_file:
+    path: "{{ download_path }}"
+    state: directory
+
+- name: Download Visual Studio Community 2017
+  win_get_url:
+    url: https://download.visualstudio.microsoft.com/download/pr/dd3eb7bc-5549-45f2-be9a-80984f4d4d90/3f078bd1dfac460c311142b1f8dad6c840bc03237511f4fd983812bb65ec5bd5/vs_Community.exe
+    dest: "{{ download_path }}\\vs_community_2017.exe"
+    force: no
+
+- name: Copy .vsconfig
+  win_copy:
+    src: vs/.vsconfig
+    dest: "{{ download_path }}\\.vsconfig"
+
+- name: Download Visual C++ Compiler for Python 2.7
+  win_get_url:
+    url: https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi
+    dest: "{{ download_path }}\\vc_for_python27.msi"
+    force: no
+
+- name: Download MAPI Header Files
+  win_get_url:
+    url: https://download.microsoft.com/download/B/6/4/B645F2C9-715A-4EAB-B561-CC0C9779C249/Outlook2010MAPIHeaders.EXE
+    dest: "{{ download_path }}\\mapiheaders.exe"
+    force: no
+
+- name: Extract MAPI Header Files
+  win_package:
+    path: "{{ download_path }}\\mapiheaders.exe"
+    creates_path: "{{ download_path }}\\OUTLOO~1.EXE"
+    arguments: "/Q /T:{{ download_path }} /C"
+
+- name: Extract MAPI Header Files (WinZip Self-Extractor)
+  win_package:
+    path: "{{ download_path }}\\OUTLOO~1.EXE"
+    creates_path: "{{ download_path }}\\MAPI"
+    arguments: "/auto {{ download_path }}\\MAPI"
+
+- name: Download mozilla-build package
+  win_get_url:
+    url: https://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
+    dest: "{{ download_path }}\\mozillabuild.exe"
+    force: no
+
+- name: Install Visual Studio Community 2017
+  win_package:
+    path: "{{ download_path }}\\vs_community_2017.exe"
+    creates_path: "{{ program_files_32 }}\\Microsoft Visual Studio\\2017\\Community"
+    arguments: "--quiet --norestart --wait --config \"{{ download_path }}\\.vsconfig\""
+  notify: restart-server
+
+- name: Install Visual C++ Compiler for Python 2.7
+  win_package:
+    path: "{{ download_path }}\\vc_for_python27.msi"
+    product_id: "{692514A8-5484-45FC-B0AE-BE2DF7A75891}"
+
+- name: Copy MAPI Header Files
+  win_copy:
+    src: "{{ download_path }}\\MAPI\\{{ item[0] }}"
+    dest: "{{ item[1] }}\\"
+    remote_src: yes
+  with_nested:
+    - "{{ mapi_header_files }}"
+    - "{{ mapi_header_paths }}"
+
+- name: Install mozilla-build package
+  win_package:
+    path: "{{ download_path }}\\mozillabuild.exe"
+    creates_path: C:\mozilla-build
+    arguments: /S

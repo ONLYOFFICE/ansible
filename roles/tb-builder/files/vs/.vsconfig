@@ -1,0 +1,10 @@
+{
+    "version": "1.0",
+    "components": [
+        "Microsoft.VisualStudio.Workload.NativeDesktop",
+        "Microsoft.VisualStudio.Workload.NativeGame",
+        "Microsoft.VisualStudio.Component.VC.CMake.Project",
+        "Microsoft.VisualStudio.Component.VC.ATL",
+        "Microsoft.VisualStudio.Component.Windows10SDK.17134"
+    ]
+}

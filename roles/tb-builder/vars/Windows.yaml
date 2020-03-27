@@ -1,0 +1,27 @@
+program_files_32: "C:\\Program Files (x86)"
+program_files_64: "C:\\Program Files"
+program_files: "{{ program_files_64 }}"
+
+download_path: C:\Temp
+
+mapi_header_paths:
+- "{{ program_files_32 }}\\Windows Kits\\10\\Include\\10.0.17134.0\\shared"
+- "{{ program_files_32 }}\\Windows Kits\\10\\Include\\10.0.17763.0\\shared"
+mapi_header_files:
+- MAPIAux.h
+- MAPICode.h
+- MAPIDbg.h
+- MAPIDefS.h
+- MAPIForm.h
+- MAPIGuid.h
+- MAPIHook.h
+- MAPINls.h
+- MAPIOID.h
+- MAPISPI.h
+- MAPITags.h
+- MAPIUtil.h
+- MAPIVal.h
+- MAPIWin.h
+- MAPIWz.h
+- MAPIX.h
+- MSPST.h
