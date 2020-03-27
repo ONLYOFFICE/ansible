@@ -1,0 +1,30 @@
+---
+
+- name: Check on the status of developer mode
+  command: DevToolsSecurity -status
+  register: dev_tools_security_status
+  changed_when: false
+
+- name: Enable developer mode
+  command: DevToolsSecurity -enable
+  become: yes
+  when: "'disabled' in dev_tools_security_status.stdout"
+
+- name: Check on the status of Gatekeeper
+  command: spctl --status
+  register: gatekeeper_status
+  changed_when: false
+  failed_when: false
+
+- name: Disable Gatekeeper
+  command: spctl --master-disable
+  become: yes
+  when: "'enabled' in gatekeeper_status.stdout"
+
+- name: Disable app checking
+  osx_defaults:
+    domain: com.apple.LaunchServices
+    key: LSQuarantine
+    type: bool
+    value: false
+  become: yes

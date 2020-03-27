@@ -1,0 +1,4 @@
+ansible_become_password: "{{ ansible_password }}"
+
+appleid_email: "builder@r7-office.ru"
+appleid_password: ""

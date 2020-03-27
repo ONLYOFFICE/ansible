@@ -1,0 +1,11 @@
+---
+- hosts:
+    - build-macos-slaves
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+
+  roles:
+    - ds-builder
+    - xcode
+    - geerlingguy.homebrew
+    - qt

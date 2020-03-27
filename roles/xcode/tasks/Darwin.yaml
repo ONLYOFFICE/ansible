@@ -1,0 +1,7 @@
+---
+
+- name: Include Command Line Tools for Xcode task
+  include_tasks: "xcode-clt.yaml"
+
+- name: Include Xcode task
+  include_tasks: "xcode.yaml"
