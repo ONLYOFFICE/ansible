@@ -28,9 +28,11 @@ String agentList_{{ loop.index }} = "{{ host }}"
 List<Entry> env_{{ loop.index }} = new ArrayList<Entry>()
 
   {% set hostloop = loop %}
-  {% for prop in hostvars[host].jenkins_slave_property %}
-  env_{{ hostloop.index }}.add(new Entry("{{ prop.key }}","{{ prop.value | replace('\\', '\\\\') }}"))
-  {% endfor %}
+  {% if hostvars[host].jenkins_slave_property is defined %}
+    {% for prop in hostvars[host].jenkins_slave_property %}
+    env_{{ hostloop.index }}.add(new Entry("{{ prop.key }}","{{ prop.value | replace('\\', '\\\\') }}"))
+    {% endfor %}
+  {% endif %}
 
 EnvironmentVariablesNodeProperty envPro_{{ loop.index }} = new EnvironmentVariablesNodeProperty(env_{{ loop.index }})
 
