@@ -54,6 +54,38 @@
     dest: "{{ download_path }}\\mozillabuild.exe"
     force: no
 
+- name: Download Rust
+  win_get_url:
+    url: https://win.rustup.rs/x86_64
+    dest: "{{ download_path }}\\rustup-init.exe"
+    force: no
+
+- name: Download Java
+  win_get_url:
+    url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-x64.exe
+    headers: 
+      Cookie: "oraclelicense=accept-securebackup-cookie"
+    dest: "{{ download_path }}\\java.exe"
+    force: no
+
+- name: Download Git
+  win_get_url:
+    url: https://npm.taobao.org/mirrors/git-for-windows/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
+    dest: "{{ download_path }}\\git.exe"
+    force: no
+
+- name: Download Inno Setup
+  win_get_url:
+    url: http://files.jrsoftware.org/is/5/innosetup-5.6.1-unicode.exe
+    dest: "{{ download_path }}\\is-unicode.exe"
+    force: no
+
+- name: Download AWSCLI
+  win_get_url:
+    url: https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
+    dest: "{{ download_path }}\\aws-cli.msi"
+    force: no
+
 - name: Install Visual Studio Community 2017
   win_package:
     path: "{{ download_path }}\\vs_community_2017.exe"
@@ -71,6 +103,7 @@
     src: "{{ download_path }}\\MAPI\\{{ item[0] }}"
     dest: "{{ item[1] }}\\"
     remote_src: yes
+    force: no
   with_nested:
     - "{{ mapi_header_files }}"
     - "{{ mapi_header_paths }}"
@@ -80,3 +113,49 @@
     path: "{{ download_path }}\\mozillabuild.exe"
     creates_path: C:\mozilla-build
     arguments: /S
+
+- block:
+    - name: Install Rust
+      win_command: .\rustup-init.exe -q --profile minimal -y
+      args:
+        chdir: "{{ download_path }}"
+
+    - name: Install Rust's cbindgen
+      win_command: cargo install cbindgen -q --force
+      args:
+        creates: "{{ user_profile_path }}\\.cargo\\bin\\cbindgen.exe"
+
+  become: yes
+  become_method: runas
+  become_user: LocalService
+
+- name: Install Java
+  win_package:
+    path: "{{ download_path }}\\java.exe"
+    product_id: '{26A24AE4-039D-4CA4-87B4-2F64180131F0}'
+    arguments: INSTALL_SILENT=Enable REBOOT=Disable SPONSORS=Disable
+
+- name: Install Git
+  win_package:
+    path: "{{ download_path }}\\git.exe"
+    product_id: 'Git_is1'
+    arguments: /VERYSILENT /NORESTART
+
+- name: Install Inno Setup
+  win_package:
+    path: "{{ download_path }}\\is-unicode.exe"
+    product_id: 'Inno Setup 5_is1'
+    arguments: /VERYSILENT /NORESTART
+
+- name: Install AWSCLI
+  win_package:
+    path: "{{ download_path }}\\aws-cli.msi"
+    product_id: '{F8C04D08-B44A-4C1E-A6B4-EEF2390806DB}'
+    arguments: /quiet /qn /norestart
+
+- name: Set up PATH variable
+  win_path:
+    elements:
+      - '{{ program_files_64 }}\Git\cmd'
+      - '{{ program_files_32 }}\Inno Setup 5'
+  notify: restart-server
