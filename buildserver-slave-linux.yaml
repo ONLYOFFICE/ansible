@@ -5,17 +5,16 @@
     - hwe
     - kamaln7.swapfile
     - geerlingguy.ntp
-    - geerlingguy.nodejs
-    - geerlingguy.pip
-
-    - ds-builder
-    - qt
-# Don't uncomment lines below, it runs in buildserver.yaml
-#    - github-user
-#    - aws-cli
 
 - hosts: build-linux-64-slaves
 
   roles:
+    - geerlingguy.nodejs
+    - geerlingguy.pip
     - geerlingguy.docker
+    - ds-builder
+    - qt
     - dockerhub-user
+# Don't uncomment lines below, it runs in buildserver.yaml
+#    - github-user
+#    - aws-cli
