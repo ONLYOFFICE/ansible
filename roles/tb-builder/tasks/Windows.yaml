@@ -158,4 +158,5 @@
     elements:
       - '{{ program_files_64 }}\Git\cmd'
       - '{{ program_files_32 }}\Inno Setup 5'
+      - '{{ program_files_32 }}\Windows Kits\10\bin\10.0.17763.0\x64'
   notify: restart-server
