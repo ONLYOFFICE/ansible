@@ -74,9 +74,9 @@
     dest: "{{ download_path }}\\git.exe"
     force: no
 
-- name: Download Inno Setup
+- name: Download Inno Setup 6
   win_get_url:
-    url: http://files.jrsoftware.org/is/5/innosetup-5.6.1-unicode.exe
+    url: http://files.jrsoftware.org/is/6/innosetup-6.0.4.exe
     dest: "{{ download_path }}\\is-unicode.exe"
     force: no
 
@@ -141,10 +141,10 @@
     product_id: 'Git_is1'
     arguments: /VERYSILENT /NORESTART
 
-- name: Install Inno Setup
+- name: Install Inno Setup 6
   win_package:
     path: "{{ download_path }}\\is-unicode.exe"
-    product_id: 'Inno Setup 5_is1'
+    product_id: 'Inno Setup 6_is1'
     arguments: /VERYSILENT /NORESTART
 
 - name: Install AWSCLI
@@ -157,6 +157,6 @@
   win_path:
     elements:
       - '{{ program_files_64 }}\Git\cmd'
-      - '{{ program_files_32 }}\Inno Setup 5'
+      - '{{ program_files_32 }}\Inno Setup 6'
       - '{{ program_files_32 }}\Windows Kits\10\bin\10.0.17763.0\x64'
   notify: restart-server
