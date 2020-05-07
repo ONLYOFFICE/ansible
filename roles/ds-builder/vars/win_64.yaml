@@ -84,6 +84,20 @@ packages:
     arguments: '{{ qt56_args }}'
     path: "{{ download_path }}\\qt56.exe"
 
+  - name: Strawberry Perl 5.30.2.1
+    url: http://strawberryperl.com/download/5.30.2.1/strawberry-perl-5.30.2.1-64bit.msi
+    product_id: '{A24E496A-6EAC-1014-8A44-C92135D88115}'
+    creates_path: C:\Strawberry
+    arguments: "{{ msi_args }}"
+    path: "{{ download_path }}\\strawberry-perl.msi"
+
+  - name: NASM 2.14.02
+    url: https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/win64/nasm-2.14.02-installer-x64.exe
+    product_id: ''
+    creates_path: "{{ program_files_64 }}\\NASM"
+    arguments: "/S"
+    path: "{{ download_path }}\\nasm.exe"
+
 mingw_packages:
   - name: Mingw
     url: https://netix.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-win32/seh/x86_64-8.1.0-release-win32-seh-rt_v6-rev0.7z
@@ -101,5 +115,6 @@ exec_path:
   - '{{ program_files_32 }}\Inno Setup 5'
   - '{{ program_files_32 }}\Microsoft Visual Studio 14.0\VC\bin'
   - '{{ program_files_32 }}\Windows Kits\10\bin\x64'
+  - '{{ program_files_64 }}\NASM'
 
 innosetup_path: "{{ program_files_32 }}\\Inno Setup 5"
