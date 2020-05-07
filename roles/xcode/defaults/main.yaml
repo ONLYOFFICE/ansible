@@ -1,0 +1,1 @@
+remote_upload_path: "{{ ansible_user_dir }}/Library/Caches/XcodeInstall"

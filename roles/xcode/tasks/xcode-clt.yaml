@@ -1,0 +1,86 @@
+---
+
+- name: Check if Command Line Tools for Xcode is installed
+  command: xcode-select -p
+  register: xcode_clt_status
+  changed_when: false
+  failed_when: false
+
+- name: Register xcode_clt_installed
+  set_fact:
+    xcode_clt_installed: "{{ xcode_clt_status.rc == 0 }}"
+
+# - name: Check if Command Line Tools for Xcode is installed
+#   command: pkgutil --pkg-info com.apple.pkg.CLTools_Executables
+#   register: xcode_clt_pkg_info
+#   changed_when: false
+#   failed_when: false
+
+# - name: Register xcode_clt_installed
+#   set_fact:
+#     xcode_clt_installed: "{{ xcode_clt_pkg_info.rc == 0 }}"
+
+- name: Install Command Line Tools for Xcode
+  block:
+    - name: Check if Command Line Tools for Xcode is downloaded
+      stat:
+        path: "{{ xcode_clt_dmg_path }}"
+      register: xcode_clt_status
+      changed_when: false
+      failed_when: false
+
+    - name: Register xcode_clt_downloaded
+      set_fact:
+        xcode_clt_downloaded: "{{ (xcode_clt_status.stat.exists == true) and (xcode_clt_status.stat.checksum == xcode_clt_sha1sum) }}"
+
+    - block:
+        - name: Create cache directory
+          file:
+            path: "{{ remote_upload_path }}"
+            state: directory
+
+        - name: Check for local Command Line Tools package
+          local_action: stat path="{{ role_path }}/files/{{ xcode_clt_src }}"
+          register: xcode_clt_local
+
+        - name: Copy local Command Line Tools to host
+          copy:
+            src: "{{ xcode_clt_src }}"
+            dest: "{{ xcode_clt_dmg_path }}"
+            checksum: "{{ xcode_clt_sha1sum }}"
+          when: xcode_clt_local.stat.exists
+
+        - name: Include Apple cookies task
+          include_tasks: "apple-cookies.yaml"
+          when:
+            - not xcode_clt_local.stat.exists
+            - apple_download_cookies is not defined
+
+        - name: Download Command Line Tools from Apple Developer (curl)
+          command: "curl -X GET '{{ xcode_clt_url }}' --cookie '{{ apple_download_cookies }}' -o '{{ xcode_clt_dmg_path }}'"
+          when: not xcode_clt_local.stat.exists
+      when: not xcode_clt_downloaded
+
+    - name: Check if Command Line Tools image is mounted
+      stat:
+        path: "{{ xcode_clt_pkg_path | dirname }}"
+      register: xcode_clt_mount
+
+    - name: Mount Command Line Tools image
+      command: hdiutil attach {{ xcode_clt_dmg_path }}
+      when: not xcode_clt_mount.stat.exists
+
+    # - name: Create Xcode Command Line Tools progress placeholder file
+    #   file:
+    #     path: /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+    #     state: touch
+    #   when: xcode_clt_package is not skipped
+
+    - name: Install Command Line Tools from PKG file
+      command: installer -package '{{ xcode_clt_pkg_path }}' -target /
+      become: yes
+      ignore_errors: true
+
+    - name: Unmount Command Line Tools image
+      command: hdiutil detach '{{ xcode_clt_pkg_path | dirname }}'
+  when: not xcode_clt_installed

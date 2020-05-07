@@ -1,0 +1,19 @@
+---
+
+- name: Install Qt homebrew package
+  homebrew:
+    name: qt5
+    state: present
+
+- name: Check Qt path
+  command: "brew --prefix qt5"
+  register: brew_qt5_prefix
+
+- name: Set Qt path variable
+  set_fact: qt_path="{{ brew_qt5_prefix.stdout }}/bin"
+
+- name: Save Qt path
+  copy:
+    content: "{{ qt_path }}\n"
+    dest: /etc/paths.d/qt5
+  become: yes

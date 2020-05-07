@@ -1,5 +1,6 @@
 - src: geerlingguy.apache
 - src: geerlingguy.docker
+- src: geerlingguy.homebrew
 - src: geerlingguy.java
 - src: geerlingguy.jenkins
 - src: geerlingguy.nodejs

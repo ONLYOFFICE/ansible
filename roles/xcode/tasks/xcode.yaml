@@ -1,0 +1,99 @@
+---
+
+- name: Check if Xcode is installed
+  stat:
+    path: "/Applications/Xcode.app"
+  register: xcode_status
+  changed_when: false
+  failed_when: false
+
+- name: Register xcode_installed
+  set_fact:
+    xcode_installed: "{{ xcode_status.stat.exists and xcode_status.stat.isdir }}"
+
+# - name: Check if Xcode is installed
+#   command: pkgutil --pkg-info com.apple.pkg.Xcode
+#   register: xcode_pkg_info
+#   changed_when: false
+#   failed_when: false
+
+# - name: Register xcode_installed
+#   set_fact:
+#     xcode_installed: "{{ xcode_pkg_info.rc == 0 }}"
+
+- name: Install Xcode
+  block:
+    - name: Check if Xcode is downloaded
+      stat:
+        path: "{{ xcode_xip_path }}"
+      register: xcode_status
+      changed_when: false
+      failed_when: false
+
+    - name: Register xcode_downloaded
+      set_fact:
+        xcode_downloaded: "{{ xcode_status.stat.exists and (xcode_status.stat.checksum == xcode_sha1sum) }}"
+
+    - block:
+        - name: Create cache directory
+          file:
+            path: "{{ remote_upload_path }}"
+            state: directory
+
+        - name: Check for local Xcode package
+          local_action: stat path="{{ role_path }}/files/{{ xcode_src }}"
+          register: xcode_local
+
+        - name: Copy local Xcode to host
+          copy:
+            src: "{{ xcode_src }}"
+            dest: "{{ xcode_xip_path }}"
+            checksum: "{{ xcode_sha1sum }}"
+          when: xcode_local.stat.exists
+
+        - name: Include Apple cookies task
+          include_tasks: "apple-cookies.yaml"
+          when:
+            - not xcode_local.stat.exists
+            - apple_download_cookies is not defined
+
+        - name: Download Command Line Tools from Apple Developer (curl)
+          command: "curl -X GET '{{ xcode_url }}' --cookie '{{ apple_download_cookies }}' -o '{{ xcode_xip_path }}'"
+          when: not xcode_local.stat.exists
+      when: not xcode_downloaded
+
+    - name: Expand Xcode from XIP file
+      command:
+        cmd: xip --expand {{ xcode_xip_path }}
+        chdir: "/Applications"
+  when: not xcode_installed
+
+- name: Run Xcode for checking
+  command: xcodebuild -version
+  changed_when: false
+
+- name: Accept Xcode License Agreement
+  command: xcodebuild -license accept
+  become: yes
+  changed_when: false
+
+- name: Run Xcode first launch
+  command: xcodebuild -runFirstLaunch
+  become: yes
+  changed_when: false
+
+- name: Install Core Types package
+  command: installer -pkg {{ xcode_packages_path }}/CoreTypes.pkg -target /
+  become: yes
+
+- name: Install Mobile Device package
+  command: installer -pkg {{ xcode_packages_path }}/MobileDevice.pkg -target /
+  become: yes
+
+- name: Install Mobile Device Development package
+  command: installer -pkg {{ xcode_packages_path }}/MobileDeviceDevelopment.pkg -target /
+  become: yes
+
+- name: Install Xcode System Resources package
+  command: installer -pkg {{ xcode_packages_path }}/XcodeSystemResources.pkg -target /
+  become: yes
