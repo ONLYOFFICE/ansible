@@ -18,7 +18,7 @@
   win_get_url:
     url: "{{ item.url }}"
     dest: "{{ item.path }}"
-    headers: "{{ item.headers|default() }}"
+    headers: "{{ item.headers | default(omit) }}"
     force: no
   with_items:
     - "{{ packages }}"
