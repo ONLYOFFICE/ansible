@@ -41,7 +41,7 @@
             state: directory
 
         - name: Check for local Xcode package
-          local_action: stat path="{{ role_path }}/files/{{ xcode_src }}"
+          local_action: stat path="{{ playbook_dir }}/files/{{ xcode_src }}"
           register: xcode_local
 
         - name: Copy local Xcode to host

@@ -40,7 +40,7 @@
             state: directory
 
         - name: Check for local Command Line Tools package
-          local_action: stat path="{{ role_path }}/files/{{ xcode_clt_src }}"
+          local_action: stat path="{{ playbook_dir }}/files/{{ xcode_clt_src }}"
           register: xcode_clt_local
 
         - name: Copy local Command Line Tools to host

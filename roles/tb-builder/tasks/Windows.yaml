@@ -7,6 +7,7 @@
   register: win_feature
   changed_when: win_feature.reboot_required
   notify: restart-server
+  when: ansible_os_product_type == "server"
 
 - name: Create download directory
   win_file:
@@ -100,13 +101,13 @@
 
 - name: Copy MAPI Header Files
   win_copy:
-    src: "{{ download_path }}\\MAPI\\{{ item[0] }}"
-    dest: "{{ item[1] }}\\"
+    src: "{{ download_path }}\\MAPI\\"
+    dest: "{{ item }}\\"
     remote_src: yes
     force: no
-  with_nested:
-    - "{{ mapi_header_files }}"
-    - "{{ mapi_header_paths }}"
+  with_items:
+    - "{{ program_files_32 }}\\Windows Kits\\10\\Include\\10.0.17134.0\\shared"
+    - "{{ program_files_32 }}\\Windows Kits\\10\\Include\\10.0.17763.0\\shared"
 
 - name: Install mozilla-build package
   win_package:
