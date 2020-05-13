@@ -1,2 +1,3 @@
+---
 cert_path: certs/cert.pfx
 cert_pwd: password

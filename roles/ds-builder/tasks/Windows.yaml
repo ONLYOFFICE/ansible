@@ -1,3 +1,4 @@
+---
 - name: Include windows architecture variables.
   include_vars: "{{ win_target }}.yaml"
 
@@ -65,7 +66,6 @@
   when: item.product_id is defined
   with_items:
     - "{{ packages }}"
-
 
 - name: Install additional langs for innosetup
   win_get_url:
@@ -135,5 +135,3 @@
     data: 2
     type: dword
   notify: restart-server
-
-    

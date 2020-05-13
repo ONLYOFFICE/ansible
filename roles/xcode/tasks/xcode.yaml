@@ -1,5 +1,4 @@
 ---
-
 - name: Check if Xcode is installed
   stat:
     path: "/Applications/Xcode.app"

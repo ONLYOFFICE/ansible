@@ -1,5 +1,4 @@
 ---
-
 - name: Check if Command Line Tools for Xcode is installed
   command: xcode-select -p
   register: xcode_clt_status

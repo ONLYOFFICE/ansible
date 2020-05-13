@@ -1,5 +1,4 @@
 ---
-
 - name: Create .ssh config path
   win_file:
     path: "{{ ssh_home }}\\.ssh"

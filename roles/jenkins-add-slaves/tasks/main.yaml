@@ -1,14 +1,15 @@
- - name: Include install requirements task
-   include_tasks: install-requirements.yaml
+---
+- name: Include install requirements task
+  include_tasks: install-requirements.yaml
 
- - name: Include generate ssh key task
-   include_tasks: gen-ssh-key.yaml
+- name: Include generate ssh key task
+  include_tasks: gen-ssh-key.yaml
 
- - name: Include add credentials task
-   include_tasks: add-credentials.yaml
+- name: Include add credentials task
+  include_tasks: add-credentials.yaml
 
- - name: Include add slave task
-   include_tasks: add-slave.yaml
+- name: Include add slave task
+  include_tasks: add-slave.yaml
 
- - name: Include add slave task
-   include_tasks: setup-windows-slave.yaml
+- name: Include add slave task
+  include_tasks: setup-windows-slave.yaml

@@ -1,5 +1,4 @@
 ---
-
 - name: Remove Windows Defender
   win_feature:
     name: Windows-Defender

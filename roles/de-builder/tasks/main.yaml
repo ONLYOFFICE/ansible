@@ -1,3 +1,4 @@
+---
 - name: install requred packages
   apt: name={{ item }} force=yes 
   with_items:

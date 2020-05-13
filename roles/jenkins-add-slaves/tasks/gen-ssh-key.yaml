@@ -1,5 +1,4 @@
 ---
-
 - name: "Create a directory .ssh if it doesn't exist"
   file:
     path: "{{ jenkins_home }}/.ssh"

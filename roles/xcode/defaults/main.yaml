@@ -1,3 +1,4 @@
+---
 remote_upload_path: "{{ ansible_user_dir }}/Library/Caches/XcodeInstall"
 
 xcode_src: "xcode/Xcode_11.3.1.xip"

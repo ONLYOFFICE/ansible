@@ -1,2 +1,3 @@
+---
 user_profile_path: C:\Windows\ServiceProfiles\LocalService
 license_path: "{{ user_profile_path }}\\AppData\\Local\\Microsoft\\VSCommon\\OnlineLicensing\\VisualStudio 14.0"

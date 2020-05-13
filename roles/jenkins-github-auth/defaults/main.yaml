@@ -1,3 +1,4 @@
+---
 jenkins_github_auth_clientid: "clientid"
 jenkins_github_auth_clientsecret: "secret"
 jenkins_github_auth_oauthscopes: "read:org"

@@ -1,5 +1,4 @@
 ---
-
 - name: Check on the status of developer mode
   command: DevToolsSecurity -status
   register: dev_tools_security_status

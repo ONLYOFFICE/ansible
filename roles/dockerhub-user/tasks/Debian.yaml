@@ -1,3 +1,4 @@
+---
 - name: Install requred packages
   apt:
     name: python-pip

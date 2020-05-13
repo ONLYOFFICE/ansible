@@ -1,5 +1,4 @@
 ---
-
 - name: Install Qt homebrew package
   homebrew:
     name: qt5

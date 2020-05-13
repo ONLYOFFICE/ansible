@@ -1,2 +1,3 @@
+---
 jenkins_github_auth_weburi: "https://github.com"
 jenkins_github_auth_apiuri: "https://api.github.com"

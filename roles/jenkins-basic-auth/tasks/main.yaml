@@ -1,3 +1,4 @@
+---
 - name: Ensure jenkins exist
   stat:
     path: "{{ jenkins_home }}/init.groovy.d"

@@ -1,5 +1,4 @@
 ---
-
 - name: Create aws directory
   win_file:
     path: "{{ aws_cli_config_dir }}"

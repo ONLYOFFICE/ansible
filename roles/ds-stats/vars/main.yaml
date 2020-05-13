@@ -1,2 +1,3 @@
+---
 graphite_user: _graphite
 graphite_db: /var/lib/graphite/graphite.db

@@ -1,3 +1,4 @@
+---
 qt_version: "5.9"
 qt_release: "{{ qt_version }}.8"
 qt_src_dir: "qt-everywhere-opensource-src-{{ qt_release }}"

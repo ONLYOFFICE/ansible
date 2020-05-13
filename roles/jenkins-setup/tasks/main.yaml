@@ -1,7 +1,7 @@
 ---
-  - name: Execute setup script
-    jenkins_script:
-      script: "{{ lookup('template', 'setup.groovy.jn2')}}"
-      user: "{{ jenkins_admin_username }}"
-      password: "{{ jenkins_admin_password }}"
-      url: "http://localhost:{{ jenkins_http_port }}/"
+- name: Execute setup script
+  jenkins_script:
+    script: "{{ lookup('template', 'setup.groovy.jn2')}}"
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    url: "http://localhost:{{ jenkins_http_port }}/"

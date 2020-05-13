@@ -1,3 +1,4 @@
+---
 - name: Install requred packages
   apt: 
     name: "{{ qt_build_sourcecode_packages }}"

@@ -1,5 +1,4 @@
 ---
-
 - name: Install Thunderbird build dependencies
   package:
     name: "{{ packages }}"

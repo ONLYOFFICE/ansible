@@ -1,60 +1,61 @@
-  - name: Install requred packages
-    apt: name={{ item }}
-    with_items:
-      - "graphite-web"
-      - "graphite-carbon"
-      - "nginx"
-      - "uwsgi"
-      - "uwsgi-plugin-python"
-      
-  - name: Create db graphite
-    shell: graphite-manage syncdb --noinput
-    args:
-      creates: "{{ graphite_db }}"
+---
+- name: Install requred packages
+  apt: name={{ item }}
+  with_items:
+    - "graphite-web"
+    - "graphite-carbon"
+    - "nginx"
+    - "uwsgi"
+    - "uwsgi-plugin-python"
+    
+- name: Create db graphite
+  shell: graphite-manage syncdb --noinput
+  args:
+    creates: "{{ graphite_db }}"
 
-  - name: Change own for graphite db 
-    file: 
-      path: "{{ graphite_db }}"
-      owner: "{{ graphite_user }}"
-      group: "{{ graphite_user }}"
+- name: Change own for graphite db 
+  file: 
+    path: "{{ graphite_db }}"
+    owner: "{{ graphite_user }}"
+    group: "{{ graphite_user }}"
 
-  - name: Turn on start carbon on startup service
-    replace:
-      dest: /etc/default/graphite-carbon
-      regexp: '(CARBON_CACHE_ENABLED=).*'
-      replace: '\1true'
-      backup: yes  
+- name: Turn on start carbon on startup service
+  replace:
+    dest: /etc/default/graphite-carbon
+    regexp: '(CARBON_CACHE_ENABLED=).*'
+    replace: '\1true'
+    backup: yes  
+
+- name: Setup graphite
+  replace:
+    dest: /etc/graphite/local_settings.py
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+    backup: yes
+  with_items:
+    - { regexp: "#?(DASHBOARD_REQUIRE_AUTHENTICATION = ).*", replace: '\1"True"' }
+    - { regexp: "#?(TIME_ZONE = ).*", replace: '\1"Europe/Moscow"' }
+  notify: restart-uwsgi
+
+- name: Copy nginx config
+  template: 
+    src: nginx/default.jn2
+    dest: /etc/nginx/sites-enabled/default
+  notify: restart-nginx
   
-  - name: Setup graphite
-    replace:
-      dest: /etc/graphite/local_settings.py
-      regexp: "{{ item.regexp }}"
-      replace: "{{ item.replace }}"
-      backup: yes
-    with_items:
-      - { regexp: "#?(DASHBOARD_REQUIRE_AUTHENTICATION = ).*", replace: '\1"True"' }
-      - { regexp: "#?(TIME_ZONE = ).*", replace: '\1"Europe/Moscow"' }
-    notify: restart-uwsgi
-
-  - name: Copy nginx config
-    template: 
-      src: nginx/default.jn2
-      dest: /etc/nginx/sites-enabled/default
-    notify: restart-nginx
-    
-  - name: Copy uwsgi config
-    template:
-      src: uwsgi/grafite.ini.jn2
-      dest: /etc/uwsgi/apps-enabled/grafite.ini
-    notify: restart-uwsgi
-    
-  - name: Tune the retention for stored metrics
-    ini_file:
-      dest: "/etc/carbon/storage-schemas.conf"
-      section: "{{ item.section }}"
-      option: "{{ item.option }}"
-      value: "{{ item.value }}"
-    with_items:
-      - { section: default_1min_for_1day, option: pattern,  value: ".*" }
-      - { section: default_1min_for_1day, option: retentions,  value: "60s:90d" }
-    notify: restart-carbon-cache
+- name: Copy uwsgi config
+  template:
+    src: uwsgi/grafite.ini.jn2
+    dest: /etc/uwsgi/apps-enabled/grafite.ini
+  notify: restart-uwsgi
+  
+- name: Tune the retention for stored metrics
+  ini_file:
+    dest: "/etc/carbon/storage-schemas.conf"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { section: default_1min_for_1day, option: pattern,  value: ".*" }
+    - { section: default_1min_for_1day, option: retentions,  value: "60s:90d" }
+  notify: restart-carbon-cache

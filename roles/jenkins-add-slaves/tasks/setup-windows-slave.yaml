@@ -1,3 +1,4 @@
+---
 - name: Create jenkin directory on remote windows host
   win_file:
     path: "{{ jenkins_win_slave_home }}"

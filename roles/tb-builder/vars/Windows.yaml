@@ -1,3 +1,4 @@
+---
 program_files_32: "C:\\Program Files (x86)"
 program_files_64: "C:\\Program Files"
 program_files: "{{ program_files_64 }}"

@@ -1,5 +1,4 @@
 ---
-
 - name: Check remote temp directory
   win_file:
     path: "{{ remote_upload_path }}"

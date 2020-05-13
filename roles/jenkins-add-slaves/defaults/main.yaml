@@ -1,3 +1,4 @@
+---
 jenkins_private_keyname: id_rsa
 jenkins_keys_size: 2048
 

@@ -1,5 +1,4 @@
 ---
-
 - name: Check remote directory
   win_file:
     path: "{{ license_path }}"

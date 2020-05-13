@@ -1,3 +1,4 @@
+---
 - name: configure jenkins
   template:
     src: groovy/init.groovy.jn2
