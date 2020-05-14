@@ -117,5 +117,8 @@ exec_path:
   - '{{ program_files_32 }}\Microsoft Visual Studio 14.0\VC\bin'
   - '{{ program_files_32 }}\Windows Kits\10\bin\x86'
   - '{{ program_files_32 }}\NASM'
+  - '%SystemDrive%\c\bin'
+  - '%SystemDrive%\perl\site\bin'
+  - '%SystemDrive%\Strawberry\perl\bin'
 
 innosetup_path: "{{ program_files_32 }}\\Inno Setup 5"
