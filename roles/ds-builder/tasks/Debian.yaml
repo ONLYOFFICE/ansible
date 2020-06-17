@@ -49,3 +49,9 @@
 - name: Install pkg
   npm: name=pkg global=yes
   become: yes
+
+- name: Add cron task for docker weekly cleaning
+  cron:
+    name: "docker clean old images"
+    special_time: weekly
+    job: "docker image prune -f -a --filter label=maintainer --filter until=168h"
