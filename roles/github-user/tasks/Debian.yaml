@@ -4,6 +4,21 @@
     name: git
   become: yes
 
+- block:
+  - name: Config git user.name
+    git_config:
+      name: user.name
+      scope: global
+      value: "{{ git_user_name }}"
+
+  - name: Config git user.email
+    git_config:
+      name: user.email
+      scope: global
+      value: "{{ git_user_email }}"
+  become: yes
+  become_user: "{{ ssh_user }}"
+
 - name: Copy ssh config
   template:
     src: "ssh/config.jn2"
@@ -34,5 +49,34 @@
     state: present
     line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
     regexp: "^github\\.com"
+  become: yes
+  become_user: "{{ ssh_user }}"
+
+- name: Install jq
+  apt: 
+    name: jq
+  become: yes
+
+- name: Install gh
+  apt:
+    deb: "{{ github_cli_url }}"
+  become: yes
+
+- block:
+  - name: Create gh config directory
+    file:
+      path: "{{ ssh_home }}/.config/gh"
+      state: directory
+      mode: 0755
+
+  - name: Copy gh config.yml
+    copy:
+      src: "gh/config.yml"
+      dest: "{{ ssh_home }}/.config/gh/config.yml"
+
+  - name: Copy gh hosts.yml
+    template:
+      src: "gh/hosts.yml.jn2"
+      dest: "{{ ssh_home }}/.config/gh/hosts.yml"
   become: yes
   become_user: "{{ ssh_user }}"

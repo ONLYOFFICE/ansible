@@ -10,6 +10,10 @@ dockerhub_pwd: !vault |
           6536613161366430340a663661323964313533313339656261326331326161323930393238646437
           6234
 
+github_user: "papacarlo"
+github_email: "builder@onlyoffice.com"
+# github_cli_token:
+
 jenkins_slave_labels:
     - linux
     - linux_64

@@ -1,0 +1,3 @@
+github.com:
+    user: {{ github_user }}
+    oauth_token: {{ github_cli_token }}
