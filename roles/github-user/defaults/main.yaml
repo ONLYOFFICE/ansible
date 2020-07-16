@@ -2,6 +2,10 @@
 ssh_home: "{{ ansible_env.HOME }}"
 ssh_user: "{{ ansible_user }}"
 
+github_user: user
+github_email: email@example.com
+github_cli_token: token
+
 git_user_name: "{{ github_user }}"
 git_user_email: "{{ github_email }}"
 
