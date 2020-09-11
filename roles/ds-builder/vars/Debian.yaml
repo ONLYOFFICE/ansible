@@ -2,12 +2,14 @@
 deb_packages:
   - apt-transport-https
   - autoconf
+  - binutils
   - build-essential
   - createrepo
   - debhelper
   - desktop-file-utils
   - dpkg-dev
   - git
+  - imagemagick
   - libatk1.0-dev
   - libcairo2-dev
   - libcurl4-gnutls-dev
