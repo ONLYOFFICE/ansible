@@ -1,0 +1,54 @@
+---
+- name: Checking ssh directory
+  stat:
+    path: "{{ ssh_config_dest }}"
+  register: ssh_config_dir
+  changed_when: false
+
+- name: Checking ssh private keys directory
+  stat:
+    path: "{{ ssh_priv_key_dest }}"
+  register: ssh_priv_key_dir
+  changed_when: false
+
+- block:
+  - name: Create ssh config directory
+    file:
+      path: "{{ ssh_config_dest }}"
+      state: directory
+      mode: "0700"
+    when: not ssh_config_dir.stat.exists
+
+  - name: Create ssh private keys directory
+    file:
+      path: "{{ ssh_priv_key_dest }}"
+      state: "directory"
+      mode: "0700"
+    when: not ssh_priv_key_dir.stat.exists
+
+  - name: Copy sourceforge private key
+    copy: 
+      src: "{{ ssh_priv_key_src }}"
+      dest: "{{ ssh_priv_key_dest }}"
+      mode: "0600"
+
+  - name: Ensure sourceforge private key is configured
+    blockinfile:
+      path: "{{ ssh_config_dest }}/config"
+      create: yes
+      marker_begin: "SOURCEFORGE BEGIN"
+      marker_end: "SOURCEFORGE END"
+      block: |
+        Host web.sourceforge.net
+          IdentityFile {{ ssh_priv_key_dest }}/{{ ssh_priv_key_file }}
+          User {{ sourceforge_user }}
+
+  - name: Ensure web.sourceforge.net is a known host
+    lineinfile:
+      dest: "{{ ssh_home }}/.ssh/known_hosts"
+      create: yes
+      state: present
+      line: "{{ lookup('pipe', 'ssh-keyscan -t ed25519 web.sourceforge.net') }}"
+      regexp: "^web\\.sourceforge\\.net"
+  become: yes
+  become_user: "{{ ssh_user }}"

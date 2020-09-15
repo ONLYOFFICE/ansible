@@ -2,11 +2,7 @@
 ssh_home: "{{ ansible_env.HOME }}"
 ssh_user: "{{ ansible_user }}"
 
-github_user: user
-github_email: email@example.com
-github_cli_token: token
+git_user_name: user
+git_user_email: email@example.com
 
-git_user_name: "{{ github_user }}"
-git_user_email: "{{ github_email }}"
-
-github_cli_url: https://github.com/cli/cli/releases/download/v0.10.1/gh_0.10.1_linux_amd64.deb
+github_cli_url: https://github.com/cli/cli/releases/download/v0.11.1/gh_0.11.1_linux_amd64.deb

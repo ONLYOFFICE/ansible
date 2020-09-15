@@ -17,4 +17,5 @@
     - dockerhub-user
 # Don't uncomment lines below, it runs in buildserver.yaml
 #    - github-user
+#    - sourceforge-user
 #    - aws-cli

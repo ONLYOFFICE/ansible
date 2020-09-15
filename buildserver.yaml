@@ -25,6 +25,7 @@
    - role: jenkins-setup
    - role: jenkins-github-auth
    - role: github-user
+   - role: sourceforge-user
    - role: aws-cli
    - role: s3-backup
 
@@ -32,6 +33,7 @@
 
   roles:
    - github-user
+   - sourceforge-user
    - aws-cli
 
 - hosts: build-windows-slaves

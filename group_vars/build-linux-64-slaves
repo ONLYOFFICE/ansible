@@ -10,9 +10,10 @@ dockerhub_pwd: !vault |
           6536613161366430340a663661323964313533313339656261326331326161323930393238646437
           6234
 
-github_user: "papacarlo"
-github_email: "builder@onlyoffice.com"
-github_cli_token: !vault |
+git_user_name: "papacarlo"
+git_user_email: "builder@onlyoffice.com"
+
+github_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           36363964316464616161366361373264623963653636363663623230623433636636313462626365
           6465393735373932383963646133643561656139353262340a643835613835366265363434306661
@@ -20,6 +21,8 @@ github_cli_token: !vault |
           3866326138636161610a396233656263643536346137643931663765383936393666663231353266
           34313937313361393564626661393962613662663261373038383037646536323233626661616335
           3862376663363266366232343834333662346234663633343038
+
+sourceforge_user: "agolybev"
 
 jenkins_slave_labels:
     - linux
@@ -36,3 +39,5 @@ jenkins_slave_property:
       value: /usr/local/Qt-5.9.8/plugins
     - key: QT_SELECT
       value: qt
+    - key: GITHUB_TOKEN
+      value: "{{ github_token }}"

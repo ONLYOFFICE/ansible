@@ -61,22 +61,3 @@
   apt:
     deb: "{{ github_cli_url }}"
   become: yes
-
-- block:
-  - name: Create gh config directory
-    file:
-      path: "{{ ssh_home }}/.config/gh"
-      state: directory
-      mode: 0755
-
-  - name: Copy gh config.yml
-    copy:
-      src: "gh/config.yml"
-      dest: "{{ ssh_home }}/.config/gh/config.yml"
-
-  - name: Copy gh hosts.yml
-    template:
-      src: "gh/hosts.yml.jn2"
-      dest: "{{ ssh_home }}/.config/gh/hosts.yml"
-  become: yes
-  become_user: "{{ ssh_user }}"

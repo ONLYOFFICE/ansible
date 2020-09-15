@@ -1,0 +1,5 @@
+---
+ssh_config_dest: "{{ ssh_home }}/.ssh"
+ssh_priv_key_dest: "{{ ssh_home }}/.ssh/private_keys"
+ssh_priv_key_file: "sourceforge"
+ssh_priv_key_src: "private_keys/{{ ssh_priv_key_file }}"
