@@ -1,6 +1,7 @@
 import jenkins.model.Jenkins
 import jenkins.model.JenkinsLocationConfiguration
 import hudson.security.csrf.DefaultCrumbIssuer
+import jenkinsci.plugins.telegrambot.TelegramBotGlobalConfiguration
 
 // set up CSRF Protection
 Jenkins.instance.setCrumbIssuer(new DefaultCrumbIssuer(true))
@@ -13,3 +14,11 @@ jenkinsLocationConfiguration.setUrl("{{ jenkins_url }}")
 jenkinsLocationConfiguration.setAdminAddress("{{ jenkins_admin_mail }}")
 
 jenkinsLocationConfiguration.save()
+
+def telegramBotConfiguration = TelegramBotGlobalConfiguration.all().get(TelegramBotGlobalConfiguration)
+
+telegramBotConfiguration.setBotName("{{ jenkins_telegram_bot_name }}")
+telegramBotConfiguration.setBotToken("{{ jenkins_telegram_bot_token }}")
+telegramBotConfiguration.setShouldLogToConsole(true)
+
+telegramBotConfiguration.save()
