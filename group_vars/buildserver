@@ -35,6 +35,7 @@ jenkins_plugins:
   - multi-branch-project-plugin
   - matrix-auth
   - matrix-combinations-parameter
+  - pipeline-utility-steps
   - name: ssh-slaves
     version: 1.30.0
   - telegram-notifications
