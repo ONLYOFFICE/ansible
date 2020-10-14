@@ -44,7 +44,7 @@ jenkins_plugins:
 # jenkins_plugins_state: latest
 # jenkins_plugin_updates_expiration: 0
 
-jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow -Dfile.encoding=UTF-8"
+jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow -Dfile.encoding=UTF-8 -Djenkins.install.runSetupWizard=false"
 
 jenkins_ssh_slave_user: "{{ jenkins_process_user }}"
 
