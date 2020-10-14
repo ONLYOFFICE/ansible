@@ -19,28 +19,30 @@ jenkins_admin_mail: builder@onlyoffice.com
 
 jenkins_http_port: 8080
 
-jenkins_repo_url: deb http://pkg.jenkins-ci.org/debian-stable binary/
-jenkins_repo_key_url: http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key
-
-jenkins_version: 2.164
+jenkins_pkg_url: https://pkg.jenkins.io/debian-stable/binary
+jenkins_prefer_lts: true
+jenkins_version: "2.249.2"
 
 jenkins_plugins:
   - ansible
   - ansicolor
+  - authorize-project
   - conditional-buildstep
+  - configuration-as-code
   - envinject
   - github
   - github-oauth
   - htmlpublisher
-  - multi-branch-project-plugin
   - matrix-auth
   - matrix-combinations-parameter
   - pipeline-utility-steps
-  - name: ssh-slaves
-    version: 1.30.0
+  - ssh-slaves
   - telegram-notifications
   - timestamper
   - workflow-aggregator
+
+# jenkins_plugins_state: latest
+# jenkins_plugin_updates_expiration: 0
 
 jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow -Dfile.encoding=UTF-8"
 
