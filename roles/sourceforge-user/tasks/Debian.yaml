@@ -1,51 +1,47 @@
 ---
-- name: Checking ssh directory
-  stat:
-    path: "{{ ssh_config_dest }}"
-  register: ssh_config_dir
-  changed_when: false
-
-- name: Checking ssh private keys directory
-  stat:
-    path: "{{ ssh_priv_key_dest }}"
-  register: ssh_priv_key_dir
-  changed_when: false
-
 - block:
-  - name: Create ssh config directory
+  - name: Create ssh data directory
     file:
-      path: "{{ ssh_config_dest }}"
+      path: "{{ ssh_data_path }}"
       state: directory
       mode: "0700"
-    when: not ssh_config_dir.stat.exists
 
-  - name: Create ssh private keys directory
-    file:
-      path: "{{ ssh_priv_key_dest }}"
-      state: "directory"
-      mode: "0700"
-    when: not ssh_priv_key_dir.stat.exists
-
-  - name: Copy sourceforge private key
-    copy: 
-      src: "{{ ssh_priv_key_src }}"
-      dest: "{{ ssh_priv_key_dest }}"
-      mode: "0600"
-
-  - name: Ensure sourceforge private key is configured
+  - name: Disable ssh host ip checking
     blockinfile:
-      path: "{{ ssh_config_dest }}/config"
+      path: "{{ ssh_config_file }}"
       create: yes
+      mode: "0600"
+      marker_begin: "CHECK HOST IP BEGIN"
+      marker_end: "CHECK HOST IP END"
+      block: |
+        CheckHostIP=no
+
+  - name: Configure sourceforge private key
+    blockinfile:
+      path: "{{ ssh_config_file }}"
+      create: yes
+      mode: "0600"
       marker_begin: "SOURCEFORGE BEGIN"
       marker_end: "SOURCEFORGE END"
       block: |
         Host web.sourceforge.net
-          IdentityFile {{ ssh_priv_key_dest }}/{{ ssh_priv_key_file }}
+          IdentityFile {{ ssh_priv_key_file }}
           User {{ sourceforge_user }}
+
+  - name: Create ssh private keys directory
+    file:
+      path: "{{ ssh_priv_key_file | dirname }}"
+      state: "directory"
+
+  - name: Copy sourceforge private key
+    copy: 
+      src: "{{ ssh_priv_key_src }}"
+      dest: "{{ ssh_priv_key_file }}"
+      mode: "0600"
 
   - name: Ensure web.sourceforge.net is a known host
     lineinfile:
-      dest: "{{ ssh_home }}/.ssh/known_hosts"
+      dest: "{{ ssh_known_hosts_file }}"
       create: yes
       state: present
       line: "{{ lookup('pipe', 'ssh-keyscan -t ed25519 web.sourceforge.net') }}"
