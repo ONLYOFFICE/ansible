@@ -27,8 +27,8 @@ packages:
     path: "{{ download_path }}\\is-unicode.exe"
 
   - name: Java
-    url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-i586.exe
-    product_id: '{26A24AE4-039D-4CA4-87B4-2F32180131F0}'
+    url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-x64.exe
+    product_id: '{26A24AE4-039D-4CA4-87B4-2F64180131F0}'
     arguments: '{{ java_args }}'
     path: "{{ download_path }}\\java.exe"
     headers: 
