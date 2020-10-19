@@ -25,6 +25,10 @@
   with_items:
     - "{{ packages }}"
     - "{{ mingw_packages }}"
+  register: result
+  until: result.status_code == 200
+  retries: 5
+  delay: 60
 
 - name: Get vs.xml
   win_template:
@@ -58,7 +62,6 @@
 
 - name: Install packages GUIDed packages
   win_package:
-    name: "{{ item.name }}"
     path: "{{ item.path }}"
     product_id: "{{ item.product_id|default(omit) }}"
     creates_path: "{{ item.creates_path|default(omit) }}"
