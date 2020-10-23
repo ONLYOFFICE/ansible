@@ -52,6 +52,6 @@
 
 - name: Add cron task for docker weekly cleaning
   cron:
-    name: "docker clean old images"
+    name: "docker clean old data"
     special_time: weekly
-    job: "docker image prune -f -a --filter label=maintainer --filter until=168h"
+    job: "docker system prune -f -a --filter until=168h && docker volume prune -f"
