@@ -32,14 +32,9 @@
   become: yes
   ignore_errors: yes
 
-- name: Install patchelf repo
-  apt_repository:
-    repo: "{{ patchelf_repo }}"
-    filename: qt
-
 - name: Install patchelf
   apt:
-    name: "{{ patchelf_package }}"
+    deb: "{{ patchelf_deb_url }}"
     force: yes
 
 - name: Install grunt
