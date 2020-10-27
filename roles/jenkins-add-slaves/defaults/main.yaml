@@ -15,6 +15,8 @@ jenkins_ssh_slave: "{%- set ips = [] %}
     {%- endfor %}
     {{- ips -}}"
 
+jenkins_internal_url: "{{ jenkins_url }}"
+
 jenkins_win_slaves_name: buildserver-windows-slaves
 jenkins_win_slave_group: "{{ groups[jenkins_win_slaves_name]|default([''])}}"
 jenkins_win_slave_home: C:\jws
