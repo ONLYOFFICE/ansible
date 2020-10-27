@@ -145,7 +145,7 @@
   win_package:
     path: "{{ download_path }}\\is-unicode.exe"
     product_id: 'Inno Setup 6_is1'
-    arguments: /VERYSILENT /NORESTART
+    arguments: /ALLUSERS /VERYSILENT /NORESTART
 
 - name: Install AWSCLI
   win_package:
