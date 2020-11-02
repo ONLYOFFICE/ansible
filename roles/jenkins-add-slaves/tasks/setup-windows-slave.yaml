@@ -45,7 +45,7 @@
     description: run jenkins slave agent
     actions:
     - path: java.exe
-      arguments: "-jar {{ jenkins_win_slave_agent }} -jnlpUrl {{ jenkins_internal_url }}/computer/{{ item.0 }}/slave-agent.jnlp -secret {{ item.1.matches[0].argument }} -workDir {{ jenkins_win_slave_home }}"
+      arguments: "-cp {{ jenkins_win_slave_agent }} hudson.remoting.jnlp.Main -headless -workDir {{ jenkins_win_slave_home }} -url {{ jenkins_internal_url }} {{ item.1.matches[0].argument }} {{ item.0 }}"
     triggers:
     - type: boot
     username: LOCAL SERVICE
