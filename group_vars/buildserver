@@ -26,7 +26,6 @@ jenkins_version: "2.249.2"
 jenkins_plugins:
   - ansible
   - ansicolor
-  - authorize-project
   - conditional-buildstep
   - configuration-as-code
   - envinject
