@@ -5,3 +5,10 @@
     user: "{{ jenkins_admin_username }}"
     password: "{{ jenkins_admin_password }}"
     url: "http://localhost:{{ jenkins_http_port }}/"
+
+- name: Execute add credentials script
+  jenkins_script:
+    script: "{{ lookup('template', 'add-credentials.groovy.jn2')}}"
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    url: "http://localhost:{{ jenkins_http_port }}/"

@@ -29,6 +29,7 @@ jenkins_plugins:
   - ansicolor
   - conditional-buildstep
   - envinject
+  - generic-webhook-trigger
   - github
   - github-oauth
   - htmlpublisher
@@ -45,6 +46,14 @@ jenkins_plugins:
 jenkins_java_options: "-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Moscow -Dfile.encoding=UTF-8"
 
 jenkins_ssh_slave_user: "{{ jenkins_process_user }}"
+
+jenkins_clean_job_token: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          31363238353435343635313035633632396561396366666666333966363461663935666637323035
+          6435353634643932396133613766343164613363376465650a333330663534613537303262363032
+          62303465633666616362343632363865383561346662306363386365623561336537353032393038
+          3130626362643535310a626230663062363331353533656561313636373464333333343137333366
+          3461
 
 jenkins_telegram_bot_name: "{{ groups.buildserver[0] }} Bot"
 jenkins_telegram_bot_token: !vault |
