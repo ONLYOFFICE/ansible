@@ -124,6 +124,12 @@
   win_command: "npm.cmd config set prefix {{ npm_path_stat.stdout_lines[0] }}"
   when: grunt_path_stat.stat.exists != true or pkg_path_stat.stat.exists != true
 
+- name: Set Unicode UTF-8 as default codepage
+  win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Nls\CodePage
+    name: OEMCP
+    data: 65001
+
 - name: Add or update registry path
   win_regedit:
     path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
