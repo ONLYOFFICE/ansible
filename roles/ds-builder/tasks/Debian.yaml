@@ -5,6 +5,24 @@
     force: yes 
   become: yes
 
+- name: Add an Aptly apt key
+  apt_key:
+    keyserver: "{{ aptly_keyserver }}"
+    id: "{{ aptly_keyid }}"
+  become: yes
+
+- name: Install Aptly repo
+  apt_repository:
+    repo: "{{ aptly_repo }}"
+    filename: aptly
+  become: yes
+
+- name: Install Aptly
+  apt:
+    name: "{{ aptly_package }}"
+    force: yes
+  become: yes
+
 - name: Install java repo
   apt_repository:
     repo: "{{ java_repo }}"

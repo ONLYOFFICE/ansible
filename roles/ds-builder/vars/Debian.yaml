@@ -30,6 +30,11 @@ deb_packages:
   - wget
   - unzip
 
+aptly_repo: deb http://repo.aptly.info/ squeeze main
+aptly_package: aptly
+aptly_keyserver: pool.sks-keyservers.net
+aptly_keyid: ED75B5A4483DA07C
+
 java_repo: ppa:openjdk-r/ppa
 java_package: openjdk-8-jdk
 
