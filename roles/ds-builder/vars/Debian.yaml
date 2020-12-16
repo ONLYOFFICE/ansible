@@ -1,6 +1,7 @@
 ---
 deb_packages:
   - apt-transport-https
+  - aptly
   - autoconf
   - binutils
   - build-essential
@@ -20,25 +21,30 @@ deb_packages:
   - libtool
   - libxml2-dev
   - libxss-dev
+  - openjdk-8-jdk
   - p7zip-full
+  - patchelf
+  - qt59-meta-full
   - qtchooser
-  - software-properties-common
   - sed
+  - software-properties-common
   - subversion
   - symlinks
   - tar
-  - wget
   - unzip
+  - wget
 
-aptly_repo: deb http://repo.aptly.info/ squeeze main
-aptly_package: aptly
-aptly_keyserver: pool.sks-keyservers.net
-aptly_keyid: ED75B5A4483DA07C
+deb_repositories:
+  - name: aptly
+    repo: deb http://repo.aptly.info/ squeeze main
+    keyserver: pool.sks-keyservers.net
+    keyid: ED75B5A4483DA07C
 
-java_repo: ppa:openjdk-r/ppa
-java_package: openjdk-8-jdk
+  - name: patchelf
+    repo: ppa:flixr/backports
 
-qt_repo: ppa:beineri/opt-qt596-trusty
-qt_package: qt59-meta-full
+  - name: java
+    repo: ppa:openjdk-r/ppa
 
-patchelf_deb_url: http://ftp.debian.org/debian/pool/main/p/patchelf/patchelf_0.8-2_amd64.deb
+  - name: qt
+    repo: ppa:beineri/opt-qt596-trusty

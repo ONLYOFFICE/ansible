@@ -1,59 +1,33 @@
 ---
+- name: Add repos apt keys
+  apt_key:
+    keyserver: "{{ item.keyserver }}"
+    id: "{{ item.keyid }}"
+  when:
+    - item.keyserver is defined
+    - item.keyid is defined
+  with_items: "{{ deb_repositories }}"
+  become: yes
+
+- name: Add required repos
+  apt_repository:
+    repo: "{{ item.repo }}"
+    codename: "{{ item.codename | default(omit) }}"
+    filename: "{{ item.name | default(omit) }}"
+  with_items: "{{ deb_repositories }}"
+  become: yes
+
 - name: Install requred packages
   apt: 
     name: "{{ deb_packages }}"
+    state: latest
     force: yes 
   become: yes
-
-- name: Add an Aptly apt key
-  apt_key:
-    keyserver: "{{ aptly_keyserver }}"
-    id: "{{ aptly_keyid }}"
-  become: yes
-
-- name: Install Aptly repo
-  apt_repository:
-    repo: "{{ aptly_repo }}"
-    filename: aptly
-  become: yes
-
-- name: Install Aptly
-  apt:
-    name: "{{ aptly_package }}"
-    force: yes
-  become: yes
-
-- name: Install java repo
-  apt_repository:
-    repo: "{{ java_repo }}"
-    filename: java
-  become: yes
-
-- name: Install java
-  apt:
-    name: "{{ java_package }}"
-    force: yes
-  become: yes
-
-- name: Install qt repo
-  apt_repository:
-    repo: "{{ qt_repo }}"
-    filename: qt
-
-- name: Install qt
-  apt:
-    name: "{{ qt_package }}"
-    force: yes
 
 - name: Fix qt 3rd party location
   shell: test -h /usr/lib/x86_64-linux-gnu/libpng12.so.0 && unlink /usr/lib/x86_64-linux-gnu/libpng12.so.0 && cp /lib/x86_64-linux-gnu/libpng12.so.0 /usr/lib/x86_64-linux-gnu
   become: yes
   ignore_errors: yes
-
-- name: Install patchelf
-  apt:
-    deb: "{{ patchelf_deb_url }}"
-    force: yes
 
 - name: Install grunt
   npm: name=grunt-cli global=yes
