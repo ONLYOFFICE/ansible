@@ -1,7 +1,27 @@
 ---
-- name: Install git
-  package:
-    name: git
+- name: Add repos apt keys
+  apt_key:
+    keyserver: "{{ item.keyserver }}"
+    id: "{{ item.keyid }}"
+  when:
+    - item.keyserver is defined
+    - item.keyid is defined
+  with_items: "{{ repositories }}"
+  become: yes
+
+- name: Add required repos
+  apt_repository:
+    repo: "{{ item.repo }}"
+    codename: "{{ item.codename | default(omit) }}"
+    filename: "{{ item.name | default(omit) }}"
+  with_items: "{{ repositories }}"
+  become: yes
+
+- name: Install required packages
+  apt: 
+    name: "{{ packages }}"
+    state: latest
+    force: yes
   become: yes
 
 - block:
@@ -67,13 +87,3 @@
       regexp: "^github\\.com"
   become: yes
   become_user: "{{ ssh_user }}"
-
-- name: Install jq
-  apt: 
-    name: jq
-  become: yes
-
-- name: Install gh
-  apt:
-    deb: "{{ github_cli_url }}"
-  become: yes

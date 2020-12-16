@@ -4,3 +4,17 @@ ssh_config_file: "{{ ssh_data_path }}/config"
 ssh_known_hosts_file: "{{ ssh_data_path }}/known_hosts"
 ssh_priv_key_file: "{{ ssh_data_path }}/private_keys/github.pem"
 ssh_priv_key_src: "private_keys/{{ ssh_priv_key_file | basename }}"
+
+packages:
+  - git
+  - jq
+  - gh
+
+repositories:
+  - name: jq
+    repo: ppa:opencpu/jq
+
+  - name: gh-cli
+    repo: deb https://cli.github.com/packages trusty main
+    keyserver: keyserver.ubuntu.com
+    keyid: C99B11DEB97541F0
