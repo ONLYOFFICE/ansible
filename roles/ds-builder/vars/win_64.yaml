@@ -1,6 +1,10 @@
 ---
 program_files: "{{ program_files_64 }}"
 
+chocolatey_packages:
+  - name: jdk8
+  - name: jre8
+
 packages:
   - name: 7-Zip
     url: https://www.7-zip.org/a/7z1900-x64.msi
@@ -25,14 +29,6 @@ packages:
     product_id: 'Inno Setup 5_is1'
     arguments: '{{ innosetup_args }}'
     path: "{{ download_path }}\\is-unicode.exe"
-
-  - name: Java
-    url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-windows-x64.exe
-    product_id: '{26A24AE4-039D-4CA4-87B4-2F64180131F0}'
-    arguments: '{{ java_args }}'
-    path: "{{ download_path }}\\java.exe"
-    headers: 
-      Cookie: "oraclelicense=accept-securebackup-cookie"
 
   - name: Node.js
     url: https://nodejs.org/dist/v10.17.0/node-v10.17.0-x64.msi

@@ -11,6 +11,15 @@
   notify: restart-server
   when: ansible_os_product_type == "server"
 
+- name: Install Chocolatey packages
+  win_chocolatey:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    architecture: "{{ item.architecture | default(omit) }}"
+    state: latest
+  with_items: "{{ chocolatey_packages }}"
+  notify: restart-server
+
 - name: Create download directory
   win_file:
     path: "{{ download_path }}"
