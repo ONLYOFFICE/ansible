@@ -4,6 +4,7 @@ program_files: "{{ program_files_64 }}"
 chocolatey_packages:
   - name: jdk8
   - name: jre8
+  - name: jq
 
 packages:
   - name: 7-Zip

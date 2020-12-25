@@ -11,6 +11,7 @@ deb_packages:
   - dpkg-dev
   - git
   - imagemagick
+  - jq
   - libatk1.0-dev
   - libcairo2-dev
   - libcurl4-gnutls-dev
@@ -42,6 +43,9 @@ deb_repositories:
 
   - name: patchelf
     repo: ppa:flixr/backports
+
+  - name: jq
+    repo: ppa:opencpu/jq
 
   - name: java
     repo: ppa:openjdk-r/ppa
