@@ -6,9 +6,9 @@
   roles:
     - ds-builder
     - role: aws-cli
-      user_profile_path: C:\Msys
+      user_profile_path: "{{ ansible_env.MSYS2_HOME }}"
     - role: github-user
-      user_profile_path: C:\Msys
+      user_profile_path: "{{ ansible_env.MSYS2_HOME }}"
 
 - hosts: build-windows-slaves
 

@@ -11,15 +11,6 @@
   notify: restart-server
   when: ansible_os_product_type == "server"
 
-- name: Install Chocolatey packages
-  win_chocolatey:
-    name: "{{ item.name }}"
-    version: "{{ item.version | default(omit) }}"
-    architecture: "{{ item.architecture | default(omit) }}"
-    state: latest
-  with_items: "{{ chocolatey_packages }}"
-  notify: restart-server
-
 - name: Create download directory
   win_file:
     path: "{{ download_path }}"
@@ -31,28 +22,22 @@
     dest: "{{ item.path }}"
     headers: "{{ item.headers | default(omit) }}"
     force: no
-  with_items:
-    - "{{ packages }}"
-    - "{{ mingw_packages }}"
+  with_items: "{{ packages }}"
   register: result
   until: result.status_code == 200
-  retries: 5
-  delay: 60
+  retries: 3
+  delay: 10
 
 - name: Get vs.xml
-  win_template:
-    src: 'vs/vs.xml.jn2'
+  win_copy:
+    src: 'vs/vs.xml'
     dest: '{{ vs_auto_install }}'
 
-# - name: Download msys2 auto-install.js
-#   win_get_url:
-#     url: https://raw.githubusercontent.com/msys2/msys2-installer/master/auto-install.js
-#     dest: '{{ msys2_auto_install }}'
-
-- name: Get msys2-auto-install.qs
-  win_template:
-    src: 'msys/msys2-auto-install.qs.jn2'
-    dest: '{{ msys2_auto_install }}'
+- name: Set MSYS2_HOME variable
+  win_environment:
+    level: user
+    variables:
+      MSYS2_HOME: "{{ msys2_path }}"
 
 - name: Get qt-auto-install.qs
   win_template:
@@ -75,26 +60,61 @@
     product_id: "{{ item.product_id|default(omit) }}"
     creates_path: "{{ item.creates_path|default(omit) }}"
     arguments: "{{ item.arguments }}"
-  when: item.product_id is defined
-  with_items:
-    - "{{ packages }}"
+  with_items: "{{ packages }}"
+
+- name: Install Chocolatey packages
+  win_chocolatey:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    architecture: "{{ item.arch | default(omit) }}"
+    package_params: "{{ item.params | default(omit) }}"
+    timeout: 5400
+    state: latest
+  with_items: "{{ chocolatey_packages }}"
+
+- name: Fix MSYS2 32bit
+  win_command: "{{ msys2_path }}\\msys2_shell.cmd -defterm -no-start -c \"\
+    curl \
+      -O http://repo.msys2.org/msys/i686/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz \
+      -O http://repo.msys2.org/msys/i686/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig \
+      -O http://repo.msys2.org/msys/i686/pacman-5.2.2-4-i686.pkg.tar.xz \
+      -O http://repo.msys2.org/msys/i686/zstd-1.4.4-2-i686.pkg.tar.xz \
+      -O http://repo.msys2.org/msys/i686/libzstd-1.4.4-2-i686.pkg.tar.xz; \
+    pacman --noconfirm -U --config <(echo) \
+      msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz; \
+    pacman --noconfirm -U \
+      pacman-5.2.2-4-i686.pkg.tar.xz \
+      zstd-1.4.4-2-i686.pkg.tar.xz \
+      libzstd-1.4.4-2-i686.pkg.tar.xz; \
+    touch msys2_fix; \
+    ps -ef | grep 'gpg-agent' | awk '{print $2}' | xargs -r kill\""
+  args:
+    creates: "{{ msys2_path }}\\home\\{{ ansible_user }}\\msys2_fix"
+  when: win_target == 'win_32'
+
+- name: Update MSYS2 32bit
+  win_command: "{{ msys2_path }}\\msys2_shell.cmd -defterm -no-start -c \"\
+    pacman --noconfirm -Syuu --disable-download-timeout; \
+    ps -ef | grep 'gpg-agent' | awk '{print $2}' | xargs -r kill\""
+  register: msys2_stat
+  until: msys2_stat.stdout | regex_findall('there is nothing to do') | length >= 2
+  retries: 5
+  delay: 1
+  when: win_target == 'win_32'
+
+- name: Install MSYS2 packages
+  win_command: "{{ msys2_path }}\\msys2_shell.cmd -defterm -no-start -c \"\
+    pacman -S --needed --noconfirm {{ item.name }}; \
+    ps -ef | grep 'gpg-agent' | awk '{print $2}' | xargs -r kill\""
+  args:
+    creates: "{{ msys2_path }}\\usr\\bin\\{{ item.binary }}"
+  with_items: "{{ msys2_packages }}"
 
 - name: Install additional langs for innosetup
   win_get_url:
     url: "{{ item.url }}"
     dest: "{{ item.dest }}"
-  with_items:
-    - "{{ innosetup_langs }}"
-
-- name: Check is mingw installed
-  win_stat:
-    path: "{{ mingw_path }}"
-  register: mingw_path_stat
-
-- name: Install mingw packages
-  win_command: "\"{{ program_files }}\\7-Zip\\7z.exe\" x {{ mingw_packages[0].path }} -o{{ mingw_path }}"
-  args:
-    creates: "{{ mingw_path }}"
+  with_items: "{{ innosetup_langs }}"
 
 - name: Set up PATH variable
   win_path:
@@ -102,42 +122,33 @@
     - '{{ exec_path }}'
   notify: restart-server
 
-- name: Check is grunt installed
-  win_stat:
-    path: "{{ grunt_path }}"
-  register: grunt_path_stat
+- name: NPM
+  block:
 
-- name: Check is pkg installed
-  win_stat:
-    path: "{{ pkg_path }}"
-  register: pkg_path_stat
+  - name: Get current npm path
+    win_command: "npm.cmd prefix -g"
+    register: npm_path_stat
 
-- name: Get current npm path 
-  win_command: "npm.cmd prefix -g"
-  register: npm_path_stat
-  when: grunt_path_stat.stat.exists != true or pkg_path_stat.stat.exists != true
+  - name: Install grunt
+    win_command: "npm.cmd install grunt-cli -g"
+    args:
+      creates: "{{ npm_path_stat.stdout_lines[0] }}\\grunt.cmd"
 
-- name: Setup npm path 
-  win_command: "npm.cmd config set prefix {{ npm_path }}"
-  when: grunt_path_stat.stat.exists != true or pkg_path_stat.stat.exists != true
+  - name: Install pkg
+    win_command: "npm.cmd install pkg -g"
+    args:
+      creates: "{{ npm_path_stat.stdout_lines[0] }}\\pkg.cmd"
 
-- name: Install grunt
-  win_command: "npm.cmd install grunt-cli -g"
-  when: grunt_path_stat.stat.exists != true
-
-- name: Install pkg
-  win_command: "npm.cmd install pkg -g"
-  when: pkg_path_stat.stat.exists != true
-
-- name: Restore npm path 
-  win_command: "npm.cmd config set prefix {{ npm_path_stat.stdout_lines[0] }}"
-  when: grunt_path_stat.stat.exists != true or pkg_path_stat.stat.exists != true
+  become: yes
+  become_method: runas
+  become_user: Local Service
 
 - name: Set Unicode UTF-8 as default codepage
   win_regedit:
     path: HKLM:\SYSTEM\CurrentControlSet\Control\Nls\CodePage
     name: OEMCP
     data: 65001
+  notify: restart-server
 
 - name: Add or update registry path
   win_regedit:

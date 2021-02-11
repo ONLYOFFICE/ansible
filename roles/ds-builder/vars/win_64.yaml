@@ -1,121 +1,76 @@
 ---
 program_files: "{{ program_files_64 }}"
 
+msys2_path: C:\msys64
+
 chocolatey_packages:
-  - name: jdk8
-  - name: jre8
-  - name: jq
+  -
+    name: 7zip
+  -
+    name: awscli
+  -
+    name: git
+  -
+    name: innosetup
+    version: "5.6.1"
+  -
+    name: jdk8
+  -
+    name: jre8
+  -
+    name: jq
+  -
+    name: msys2
+    params: "/InstallDir:{{ msys2_path }} /NoPath"
+    version: "20210105.0.0"
+  -
+    name: nasm
+  -
+    name: nodejs
+    version: "10.17.0"
+  -
+    name: pstools
+  -
+    name: python2
+  -
+    name: strawberryperl
+  -
+    name: tortoisesvn
 
 packages:
-  - name: 7-Zip
-    url: https://www.7-zip.org/a/7z1900-x64.msi
-    product_id: '{23170F69-40C1-2702-1604-000001000000}'
-    arguments: '{{ msi_args }}'
-    path: "{{ download_path }}\\7z.msi"
-
-  - name: AWSCLI
-    url: https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
-    product_id: '{F8C04D08-B44A-4C1E-A6B4-EEF2390806DB}'
-    arguments: '{{ msi_args }}'
-    path: "{{ download_path }}\\aws-cli.msi"
-
-  - name: Git
-    url: https://npm.taobao.org/mirrors/git-for-windows/v2.21.0.windows.1/Git-2.21.0-64-bit.exe
-    product_id: 'Git_is1'
-    arguments: '{{ innosetup_args }}'
-    path: "{{ download_path }}\\git.exe"
-
-  - name: Inno Setup
-    url: http://files.jrsoftware.org/is/5/innosetup-5.6.1-unicode.exe
-    product_id: 'Inno Setup 5_is1'
-    arguments: '{{ innosetup_args }}'
-    path: "{{ download_path }}\\is-unicode.exe"
-
-  - name: Node.js
-    url: https://nodejs.org/dist/v10.17.0/node-v10.17.0-x64.msi
-    product_id: '{13BC146A-9F0B-47F6-96CD-3458EB4D3490}'
-    arguments: '{{ msi_args }}'
-    path: "{{ download_path }}\\node.msi"
-
-  - name: Python 2.7
-    url: https://www.python.org/ftp/python/2.7.13/python-2.7.13.amd64.msi
-    product_id: '{4A656C6C-D24A-473F-9747-3A8D00907A04}'
-    arguments: '{{ msi_args }}'
-    path: "{{ download_path }}\\python27.msi"
-
-  - name: Visual Studio Community 2015
+  -
+    name: Visual Studio Community 2015
     url: https://download.microsoft.com/download/e/4/c/e4c393a9-8fff-441b-ad3a-3f4040317a1f/vs_community.exe
     product_id: '{79b486b9-c5f0-4096-a00c-8351f59587c2}'
     arguments: '{{ vs_args }}'
     path: "{{ download_path }}\\vs.exe"
-
-  - name: Windows 10 SDK
+  -
+    name: Windows 10 SDK
     url: http://download.microsoft.com/download/C/D/8/CD8533F8-5324-4D30-824C-B834C5AD51F9/standalonesdk/sdksetup.exe
     product_id: '{5eb6fbea-73ee-4a8e-9042-110704768d7f}'
     arguments: '{{ w10sdk_args }}'
     path: "{{ download_path }}\\w10sdk.exe"
-
-  - name: Tortoise svn
-    url: https://dotsrc.dl.osdn.net/osdn/storage/g/t/to/tortoisesvn/1.10.5/Application/TortoiseSVN-1.10.5.28651-x64-svn-1.10.6.msi
-    product_id: '{629C95E8-10D9-4F05-8958-DC66A5A72925}'
-    arguments: "{{ svn_args }}"
-    path: "{{ download_path }}\\svn.msi"
-
-  - name: MSYS2
-    url: http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20161025.exe
-    product_id: '{5c589d88-01bd-48fd-9fe6-32b8063be7a2}'
-    creates_path: "{{ msys2_path }}"
-    arguments: '{{ msys2_args }}'
-    path: "{{ download_path }}\\msys2.exe"
- 
-  - name: QT 5.9
+  -
+    name: QT 5.9
     url: https://download.qt.io/official_releases/qt/5.9/5.9.8/qt-opensource-windows-x86-5.9.8.exe
-    product_id: '{88d6f945-e1bf-4b45-96d3-3568988b15de}'
     creates_path: "{{ qt_path }}"
     arguments: '{{ qt_args }}'
     path: "{{ download_path }}\\qt.exe"
-
-  - name: QT 5.6
+  -
+    name: QT 5.6
     url: http://download.qt.io/new_archive/qt/5.6/5.6.3/qt-opensource-windows-x86-msvc2015_64-5.6.3.exe
-    product_id: '{50580ecb-b0e0-40e3-8031-1fc6eaf8adba}'
     creates_path: "{{ qt56_path }}"
     arguments: '{{ qt56_args }}'
     path: "{{ download_path }}\\qt56.exe"
 
-  - name: Strawberry Perl 5.30.2.1
-    url: http://strawberryperl.com/download/5.30.2.1/strawberry-perl-5.30.2.1-64bit.msi
-    product_id: '{A24E496A-6EAC-1014-8A44-C92135D88115}'
-    creates_path: C:\Strawberry
-    arguments: "{{ msi_args }}"
-    path: "{{ download_path }}\\strawberry-perl.msi"
-
-  - name: NASM 2.14.02
-    url: https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/win64/nasm-2.14.02-installer-x64.exe
-    product_id: ''
-    creates_path: "{{ program_files_64 }}\\NASM"
-    arguments: "/S"
-    path: "{{ download_path }}\\nasm.exe"
-
-mingw_packages:
-  - name: Mingw
-    url: https://netix.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-win32/seh/x86_64-8.1.0-release-win32-seh-rt_v6-rev0.7z
-    path: "{{ download_path }}\\mingw.7z"
+msys2_packages:
+  - { name: m4,   binary: m4.exe }
+  - { name: make, binary: make.exe }
 
 exec_path:
-  - '%SystemDrive%\Python27'
   - '{{ qt_path }}\5.9.8\msvc2015_64\bin'
-  - '{{ mingw_path }}\mingw64\bin'
   - '{{ msys2_path }}\usr\bin'
-  - '{{ program_files_64 }}\7-Zip'
-  - '{{ program_files_64 }}\Git\cmd'
-  - '{{ program_files_64 }}\TortoiseSVN\bin'
   - '%SystemDrive%\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm'
-  - '{{ program_files_32 }}\Inno Setup 5'
   - '{{ program_files_32 }}\Microsoft Visual Studio 14.0\VC\bin'
   - '{{ program_files_32 }}\Windows Kits\10\bin\x64'
   - '{{ program_files_64 }}\NASM'
-  - '%SystemDrive%\Strawberry\c\bin'
-  - '%SystemDrive%\Strawberry\perl\site\bin'
-  - '%SystemDrive%\Strawberry\perl\bin'
-
-innosetup_path: "{{ program_files_32 }}\\Inno Setup 5"

@@ -1,14 +1,9 @@
 ---
 download_path: C:\Temp
-msi_args: /quiet /qn /norestart
-svn_args: ADDLOCAL=ALL
 
-innosetup_args: /VERYSILENT /NORESTART
 vs_auto_install: "{{ download_path }}\\vs.xml"
 vs_args: "/Quiet /NoRestart /AdminFile {{ vs_auto_install }}"
 w10sdk_args: '/features + /q'
-msys2_auto_install: "{{ download_path }}\\msys2-auto-install.qs"
-msys2_args: '--platform minimal --script {{ msys2_auto_install }}'
 
 qt_auto_install: "{{ download_path }}\\qt-auto-install.qs"
 qt_args: '--script {{ qt_auto_install }}'
@@ -18,21 +13,15 @@ qt56_auto_install: "{{ download_path }}\\qt56-auto-install.qs"
 qt56_args: '--script {{ qt56_auto_install }}'
 qt56_path: C:\Qt\Qt5.6.3
 
-msys2_path: C:\Msys
-mingw_path: C:\Mingw
-
-npm_path: C:\Windows\ServiceProfiles\LocalService\AppData\Roaming\npm
-grunt_path: "{{ npm_path }}\\grunt.cmd"
-pkg_path: "{{ npm_path }}\\pkg.cmd"
-
-innosetup_lang_path: "{{ innosetup_path }}\\Languages"
+innosetup_lang_path: "{{ program_files_32 }}\\Inno Setup 5\\Languages"
 
 innosetup_langs:
-  - url: "https://raw.githubusercontent.com/jrsoftware/issrc/is-5/Files/Languages/Unofficial/ChineseSimplified.isl"
+  -
+    url: "https://raw.githubusercontent.com/jrsoftware/issrc/is-5_6_1/Files/Languages/Unofficial/ChineseSimplified.isl"
     dest: "{{ innosetup_lang_path }}\\ChineseSimplified.isl"
-
-  - url: "https://raw.githubusercontent.com/jrsoftware/issrc/is-5/Files/Languages/Unofficial/ChineseTraditional.isl"
+  -
+    url: "https://raw.githubusercontent.com/jrsoftware/issrc/is-5_6_1/Files/Languages/Unofficial/ChineseTraditional.isl"
     dest: "{{ innosetup_lang_path }}\\ChineseTraditional.isl"
-
-  - url: "https://raw.githubusercontent.com/jrsoftware/issrc/is-5/Files/Languages/Unofficial/Slovak.isl"
+  -
+    url: "https://raw.githubusercontent.com/jrsoftware/issrc/is-5_6_1/Files/Languages/Unofficial/Slovak.isl"
     dest: "{{ innosetup_lang_path }}\\Slovak.isl"
