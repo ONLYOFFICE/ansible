@@ -39,6 +39,9 @@
 
 - name: Add cron task for docker weekly cleaning
   cron:
-    name: "docker clean old data"
-    special_time: weekly
-    job: "docker system prune -f -a --filter until=168h && docker volume prune -f"
+    name: "Wipe Docker"
+    hour: "14"
+    weekday: "0"
+    user: "{{ ssh_user }}"
+    job: "docker system prune -f -a --volumes > /dev/null 2>&1"
+    cron_file: docker_clean
