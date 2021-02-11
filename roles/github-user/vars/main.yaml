@@ -13,6 +13,7 @@ packages:
 repositories:
   - name: jq
     repo: ppa:opencpu/jq
+    when: ansible_distribution_release == 'trusty'
 
   - name: gh-cli
     repo: deb https://cli.github.com/packages trusty main

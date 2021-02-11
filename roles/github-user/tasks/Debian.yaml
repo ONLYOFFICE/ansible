@@ -16,6 +16,7 @@
     filename: "{{ item.name | default(omit) }}"
   with_items: "{{ repositories }}"
   become: yes
+  when: "{{ item.when | default(omit) }}"
 
 - name: Install required packages
   apt: 
